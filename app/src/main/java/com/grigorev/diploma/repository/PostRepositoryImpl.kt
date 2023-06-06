@@ -6,8 +6,12 @@ import com.grigorev.diploma.api.Api
 import com.grigorev.diploma.dao.PostDao
 import com.grigorev.diploma.dto.Post
 import com.grigorev.diploma.entity.toEntity
+import javax.inject.Inject
 
-class PostRepositoryImpl(private val dao: PostDao, private val apiService: Api) : PostRepository {
+class PostRepositoryImpl @Inject constructor(
+    private val dao: PostDao,
+    private val apiService: Api
+) : PostRepository {
 
     override val flow = Pager(
         config = PagingConfig(pageSize = 10, enablePlaceholders = false),
@@ -21,7 +25,7 @@ class PostRepositoryImpl(private val dao: PostDao, private val apiService: Api) 
     override suspend fun getAll() {
         val body: List<Post>
         try {
-            val response = Api.service.getAllPosts()
+            val response = apiService.getAllPosts()
             if (!response.isSuccessful) {
                 throw Exception("Response was not successful")
             }
