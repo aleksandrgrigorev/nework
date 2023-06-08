@@ -2,7 +2,6 @@ package com.grigorev.diploma.db
 
 import android.content.Context
 import androidx.room.Room
-import com.grigorev.diploma.dao.PostDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,17 +12,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class DbModule {
-
     @Singleton
     @Provides
     fun provideDb(
         @ApplicationContext
         context: Context
     ): PostsDb = Room.databaseBuilder(context, PostsDb::class.java, "Posts.db")
+        .fallbackToDestructiveMigration()
         .build()
-
-    @Provides
-    fun providePostDao(
-        postsDb: PostsDb
-    ): PostDao = postsDb.postDao()
 }
