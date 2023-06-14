@@ -1,4 +1,4 @@
-package com.grigorev.diploma.ui
+package com.grigorev.diploma.activity
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

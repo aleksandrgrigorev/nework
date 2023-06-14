@@ -1,4 +1,4 @@
-package com.grigorev.diploma.ui
+package com.grigorev.diploma.activity
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -16,6 +16,7 @@ import java.util.Locale
 interface OnInteractionListener {
     fun onEdit(post: Post) {}
     fun onRemove(post: Post) {}
+
 }
 
 class PostsAdapter(

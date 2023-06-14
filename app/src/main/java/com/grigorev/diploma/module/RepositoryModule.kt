@@ -1,5 +1,7 @@
-package com.grigorev.diploma.repository
+package com.grigorev.diploma.module
 
+import com.grigorev.diploma.repository.PostRepository
+import com.grigorev.diploma.repository.PostRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

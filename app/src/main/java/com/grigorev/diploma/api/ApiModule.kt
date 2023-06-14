@@ -15,9 +15,17 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideApiService(): Api = Retrofit.Builder()
+    fun providePostsApiService(): PostsApiService = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-        .create(Api::class.java)
+        .create(PostsApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserApiService(): UserApiService = Retrofit.Builder()
+        .baseUrl(BuildConfig.BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(UserApiService::class.java)
 }

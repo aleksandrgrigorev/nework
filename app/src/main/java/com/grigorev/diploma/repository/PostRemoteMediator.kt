@@ -5,10 +5,10 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.grigorev.diploma.api.Api
+import com.grigorev.diploma.api.PostsApiService
 import com.grigorev.diploma.dao.PostDao
 import com.grigorev.diploma.dao.PostRemoteKeyDao
-import com.grigorev.diploma.db.PostsDb
+import com.grigorev.diploma.db.AppDb
 import com.grigorev.diploma.entity.PostEntity
 import com.grigorev.diploma.entity.PostRemoteKeyEntity
 import retrofit2.HttpException
@@ -16,10 +16,10 @@ import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class PostRemoteMediator(
-    private val apiService: Api,
+    private val postsApiService: PostsApiService,
     private val postDao: PostDao,
     private val postRemoteKeyDao: PostRemoteKeyDao,
-    private val postsDb: PostsDb,
+    private val appDb: AppDb,
 ) : RemoteMediator<Int, PostEntity>() {
 
     override suspend fun load(
@@ -28,26 +28,26 @@ class PostRemoteMediator(
     ): MediatorResult {
         try {
             val result = when (loadType) {
-                LoadType.REFRESH -> { apiService.getLatestPosts(state.config.initialLoadSize) }
+                LoadType.REFRESH -> { postsApiService.getLatestPosts(state.config.initialLoadSize) }
 
                 LoadType.PREPEND -> {
                     val id = postRemoteKeyDao.max() ?: return MediatorResult.Success(false)
-                    apiService.getPostsAfter(id, state.config.pageSize)
+                    postsApiService.getPostsAfter(id, state.config.pageSize)
                 }
 
                 LoadType.APPEND -> {
                     val id = postRemoteKeyDao.min() ?: return MediatorResult.Success(false)
-                    apiService.getPostsBefore(id, state.config.pageSize)
+                    postsApiService.getPostsBefore(id, state.config.pageSize)
                 }
             }
 
             if (!result.isSuccessful) { throw HttpException(result) }
             val body = result.body() ?: throw Error(result.message())
 
-            postsDb.withTransaction {
+            appDb.withTransaction {
                 when (loadType) {
                     LoadType.REFRESH -> {
-                        postDao.clear()
+                        postDao.removeAll()
                         postRemoteKeyDao.insert(
                             listOf(
                                 PostRemoteKeyEntity(
@@ -60,7 +60,7 @@ class PostRemoteMediator(
                                 )
                             )
                         )
-                        postDao.clear()
+                        postDao.removeAll()
                     }
 
                     LoadType.PREPEND -> {

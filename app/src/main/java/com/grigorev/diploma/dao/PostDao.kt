@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface PostDao {
 
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
-    fun getAll(): Flow<List<PostEntity>>
+    fun getAllPosts(): Flow<List<PostEntity>>
 
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
     fun getPagingSource(): PagingSource<Int, PostEntity>
@@ -24,8 +24,8 @@ interface PostDao {
     suspend fun insert(posts: List<PostEntity>)
 
     @Query("DELETE FROM PostEntity WHERE id = :id")
-    suspend fun removeById(id: Int)
+    suspend fun removePostById(id: Int)
 
     @Query("DELETE FROM PostEntity")
-    suspend fun clear()
+    suspend fun removeAll()
 }

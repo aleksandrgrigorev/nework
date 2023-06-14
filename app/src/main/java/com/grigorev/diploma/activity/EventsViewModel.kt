@@ -1,4 +1,4 @@
-package com.grigorev.diploma.ui
+package com.grigorev.diploma.activity
 
 import androidx.lifecycle.ViewModel
 

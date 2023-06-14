@@ -9,7 +9,7 @@ import com.grigorev.diploma.dto.Post
 
 @Entity
 data class PostEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
     val author: String,
     val authorAvatar: String?,
@@ -17,8 +17,10 @@ data class PostEntity(
     val authorJob: String?,
     val content: String,
     val likedByMe: Boolean,
-    val link: String?,
+    val link: String? = null,
+    val mentionIds: Set<Long> = emptySet(),
     val mentionedMe: Boolean,
+    val likeOwnerIds: Set<Long> = emptySet(),
     val ownedByMe: Boolean,
     val published: String,
     @Embedded
@@ -33,7 +35,9 @@ data class PostEntity(
         content,
         likedByMe,
         link,
+        mentionIds,
         mentionedMe,
+        likeOwnerIds,
         ownedByMe,
         published,
         attachment?.toDto()
@@ -49,7 +53,9 @@ data class PostEntity(
             dto.content,
             dto.likedByMe,
             dto.link,
+            dto.mentionIds,
             dto.mentionedMe,
+            dto.likeOwnerIds,
             dto.ownedByMe,
             dto.published,
             AttachmentEntity.fromDto(dto.attachment)
