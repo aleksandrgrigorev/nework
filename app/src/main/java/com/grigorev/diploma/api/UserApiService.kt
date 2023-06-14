@@ -1,10 +1,11 @@
 package com.grigorev.diploma.api
 
-import com.grigorev.diploma.dto.Token
+import com.grigorev.diploma.auth.AuthState
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
+
 
 interface UserApiService {
 
@@ -13,7 +14,7 @@ interface UserApiService {
     suspend fun updateUser(
         @Field("login") login: String,
         @Field("password") pass: String,
-    ): Response<Token>
+    ): Response<AuthState>
 
     @Multipart
     @POST("users/registration")
@@ -21,6 +22,6 @@ interface UserApiService {
         @Part("login") login: RequestBody,
         @Part("password") pass: RequestBody,
         @Part("name") name: RequestBody,
-        @Part image: MultipartBody.Part?,
-    ): Response<Token>
+        @Part file: MultipartBody.Part?,
+    ): Response<AuthState>
 }

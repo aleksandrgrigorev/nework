@@ -115,12 +115,12 @@ class PostsFragment : Fragment() {
                     }
 
                     R.id.signIn -> {
-                        SignInFragment().show(childFragmentManager, "authDialog")
+                        findNavController().navigate(R.id.action_navigation_posts_to_signInFragment)
                         true
                     }
 
                     R.id.signUp -> {
-                        SignUpFragment().show(childFragmentManager, "signUpDialog")
+                        findNavController().navigate(R.id.action_navigation_posts_to_signUpFragment)
                         true
                     }
 
@@ -138,8 +138,7 @@ class PostsFragment : Fragment() {
     }
 
     private fun unauthorizedAccessAttempt() {
-        Toast.makeText(context, R.string.sign_in_to_continue, Toast.LENGTH_LONG).show()
-        SignInFragment().show(childFragmentManager, "authDialog")
+        Toast.makeText(context, R.string.sign_in_to_continue, Toast.LENGTH_SHORT).show()
     }
 
 }

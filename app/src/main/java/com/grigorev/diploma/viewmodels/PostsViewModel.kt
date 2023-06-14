@@ -6,8 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.grigorev.diploma.auth.AppAuth
 import com.grigorev.diploma.dto.PhotoModel
 import com.grigorev.diploma.dto.Post
 import com.grigorev.diploma.model.StateModel
@@ -43,12 +41,7 @@ private val noPhoto = PhotoModel()
 @HiltViewModel
 class PostsViewModel @Inject constructor(
     private val repository: PostRepository,
-    appAuth: AppAuth
 ) : ViewModel() {
-    private val cached = repository
-        .data
-        .cachedIn(viewModelScope)
-
     private val _dataState = MutableLiveData(StateModel())
 
     val data: Flow<PagingData<Post>> = repository.data

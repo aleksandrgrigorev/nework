@@ -6,7 +6,11 @@ import com.grigorev.diploma.api.UserApiService
 import com.grigorev.diploma.error.ApiException
 import com.grigorev.diploma.error.NetworkException
 import com.grigorev.diploma.error.UnknownException
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import okhttp3.MultipartBody
@@ -21,7 +25,6 @@ import javax.inject.Singleton
 class AppAuth @Inject constructor(
     @ApplicationContext
     private val context: Context,
-    private val userApiService: UserApiService
 ) {
 
     private val idKey = "ID_KEY"
@@ -33,8 +36,11 @@ class AppAuth @Inject constructor(
         val id = prefs.getInt(idKey, 0)
         val token = prefs.getString(tokenKey, null)
 
-        _state = if (token == null || !prefs.contains(idKey)) {
-            prefs.edit { clear() }
+        _state = if (!prefs.contains(idKey) || token == null) {
+            with(prefs.edit()) {
+                clear()
+                apply()
+            }
             MutableStateFlow(null)
         } else {
             MutableStateFlow(AuthState(id, token))
@@ -43,11 +49,18 @@ class AppAuth @Inject constructor(
 
     val state = _state.asStateFlow()
 
+    @InstallIn(SingletonComponent::class)
+    @EntryPoint
+    interface AppAuthEntryPoint {
+        fun getApiService(): UserApiService
+    }
+
     @Synchronized
     fun setAuth(id: Int, token: String) {
         prefs.edit {
             putInt(idKey, id)
             putString(tokenKey, token)
+            apply()
         }
         _state.value = AuthState(id, token)
     }
@@ -60,7 +73,8 @@ class AppAuth @Inject constructor(
 
     suspend fun update(login: String, password: String) {
         try {
-            val response = userApiService.updateUser(login, password)
+            val entryPoint = EntryPointAccessors.fromApplication(context, AppAuthEntryPoint::class.java)
+            val response = entryPoint.getApiService().updateUser(login, password)
             if (!response.isSuccessful) {
                 throw ApiException(response.code(), response.message())
             }
@@ -76,7 +90,6 @@ class AppAuth @Inject constructor(
         }
     }
 
-
     suspend fun registerUser(login: String, password: String, name: String, file: File) {
         try {
             val fileData = MultipartBody.Part.createFormData(
@@ -84,7 +97,8 @@ class AppAuth @Inject constructor(
                 file.name,
                 file.asRequestBody()
             )
-            val response = userApiService.registerUser(
+            val entryPoint = EntryPointAccessors.fromApplication(context, AppAuthEntryPoint::class.java)
+            val response = entryPoint.getApiService().registerUser(
                 login.toRequestBody(),
                 password.toRequestBody(),
                 name.toRequestBody(),
