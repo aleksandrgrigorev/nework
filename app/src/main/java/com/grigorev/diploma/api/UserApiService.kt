@@ -9,14 +9,14 @@ import retrofit2.http.*
 interface UserApiService {
 
     @FormUrlEncoded
-    @POST("users/authentication")
+    @POST("/api/users/authentication")
     suspend fun updateUser(
         @Field("login") login: String,
         @Field("password") password: String,
     ): Response<AuthState>
 
     @Multipart
-    @POST("users/registration")
+    @POST("/api/users/registration")
     suspend fun registerUser(
         @Part("login") login: RequestBody,
         @Part("password") password: RequestBody,

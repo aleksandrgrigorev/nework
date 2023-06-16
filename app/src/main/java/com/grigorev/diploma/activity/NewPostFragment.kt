@@ -19,7 +19,9 @@ import com.grigorev.diploma.util.AndroidUtils
 import com.grigorev.diploma.util.StringArg
 import com.grigorev.diploma.viewmodels.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class NewPostFragment : Fragment() {
 

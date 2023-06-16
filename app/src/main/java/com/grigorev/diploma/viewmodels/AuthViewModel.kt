@@ -8,7 +8,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.grigorev.diploma.auth.AppAuth
 import com.grigorev.diploma.dto.PhotoModel
-import com.grigorev.diploma.error.AppError
 import com.grigorev.diploma.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +27,7 @@ class AuthViewModel @Inject constructor(
     val error: LiveData<Throwable>
         get() = _error
 
-    private val noPhoto = PhotoModel(null, null)
+    val noPhoto = PhotoModel(null, null)
 
     private val _photo = MutableLiveData(noPhoto)
     val photo: LiveData<PhotoModel>
@@ -45,12 +44,7 @@ class AuthViewModel @Inject constructor(
 
     fun registerUser(login: String, password: String, name: String, file: File) =
         viewModelScope.launch {
-            try {
-                appAuth.registerUser(login, password, name, file)
-            } catch (e: Exception) {
-                println(e)
-                throw AppError.from(e)
-            }
+            appAuth.registerUser(login, password, name, file)
         }
 
     fun changePhoto(uri: Uri?, file: File?) {

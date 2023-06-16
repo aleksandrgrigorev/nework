@@ -42,4 +42,8 @@
     <string name="new_post">New post</string>
     <string name="not_registered">Not registered?</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="reg_successful">Registration successful. Welcome!</string>
+    <string name="auth_successful">Authorization successful. Welcome!</string>
+    <string name="logout_successful">You have logged out</string>
+    <string name="pick_avatar">Click on an avatar to pick a picture</string>
 </resources>

@@ -17,6 +17,7 @@ import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
 import com.grigorev.diploma.R
 import com.grigorev.diploma.databinding.FragmentSignUpBinding
+import com.grigorev.diploma.util.AndroidUtils.hideKeyboard
 import com.grigorev.diploma.viewmodels.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,8 +31,6 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentSignUpBinding.inflate(inflater, container, false)
-
-        binding.avatar.visibility = View.VISIBLE
 
         val selectAvatarContract =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -75,6 +74,9 @@ class SignUpFragment : Fragment() {
                 Toast.makeText(context, R.string.error_blank_fields, Toast.LENGTH_SHORT).show()
             } else if (binding.password.text.toString() != binding.repeatPassword.text.toString()) {
                 Toast.makeText(context, R.string.error_passwords, Toast.LENGTH_SHORT).show()
+                hideKeyboard(requireView())
+            } else if (authViewModel.photo.value == authViewModel.noPhoto) {
+                Toast.makeText(context, R.string.pick_avatar, Toast.LENGTH_LONG).show()
             } else {
                 authViewModel.photo.value?.file?.let { file ->
                     authViewModel.registerUser(
@@ -84,6 +86,8 @@ class SignUpFragment : Fragment() {
                         file
                     )
                 }
+                Toast.makeText(context, R.string.reg_successful, Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_signUpFragment_to_navigation_posts)
             }
         }
 

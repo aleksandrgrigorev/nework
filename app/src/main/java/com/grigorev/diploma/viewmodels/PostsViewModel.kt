@@ -148,10 +148,9 @@ class PostsViewModel @Inject constructor(
 
     fun changeContent(content: String) {
         val text = content.trim()
-        if (edited.value?.content == text) {
-            return
+        if (edited.value?.content != text) {
+            edited.value = edited.value?.copy(content = text)
         }
-        edited.value = edited.value?.copy(content = text)
     }
 
     fun changePhoto(uri: Uri?, file: File?) {
