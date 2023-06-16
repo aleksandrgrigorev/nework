@@ -30,45 +30,48 @@ class AppAuth @Inject constructor(
     private val idKey = "ID_KEY"
     private val tokenKey = "TOKEN_KEY"
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
-    private val _state: MutableStateFlow<AuthState?>
+    private val _state: MutableStateFlow<AuthState>
 
     init {
         val id = prefs.getInt(idKey, 0)
         val token = prefs.getString(tokenKey, null)
 
-        _state = if (!prefs.contains(idKey) || token == null) {
+        if (id == 0 || token == null) {
+            _state = MutableStateFlow(AuthState())
             with(prefs.edit()) {
                 clear()
                 apply()
             }
-            MutableStateFlow(null)
         } else {
-            MutableStateFlow(AuthState(id, token))
+            _state = MutableStateFlow(AuthState(id, token))
         }
     }
 
     val state = _state.asStateFlow()
 
-    @InstallIn(SingletonComponent::class)
-    @EntryPoint
-    interface AppAuthEntryPoint {
-        fun getApiService(): UserApiService
-    }
-
     @Synchronized
-    fun setAuth(id: Int, token: String) {
+    fun setAuth(id: Int, token: String?) {
+        _state.value = AuthState(id, token)
         prefs.edit {
             putInt(idKey, id)
             putString(tokenKey, token)
             apply()
         }
-        _state.value = AuthState(id, token)
     }
 
     @Synchronized
     fun removeAuth() {
-        prefs.edit { clear() }
-        _state.value = null
+        _state.value = AuthState()
+        with(prefs.edit()) {
+            clear()
+            commit()
+        }
+    }
+
+    @InstallIn(SingletonComponent::class)
+    @EntryPoint
+    interface AppAuthEntryPoint {
+        fun getApiService(): UserApiService
     }
 
     suspend fun update(login: String, password: String) {
@@ -122,5 +125,5 @@ class AppAuth @Inject constructor(
 
 data class AuthState(
     val id: Int = 0,
-    val token: String = "",
+    val token: String? = null,
 )

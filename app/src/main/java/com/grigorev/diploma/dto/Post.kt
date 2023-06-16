@@ -12,9 +12,9 @@ data class Post(
     val content: String = "",
     val likedByMe: Boolean = false,
     val link: String? = null,
-    val mentionIds: Set<Long> = emptySet(),
+    val mentionIds: Set<Int> = emptySet(),
     val mentionedMe: Boolean,
-    val likeOwnerIds: Set<Long> = emptySet(),
+    val likeOwnerIds: Set<Int> = emptySet(),
     val ownedByMe: Boolean = false,
     val published: String = "",
     val attachment: Attachment? = null

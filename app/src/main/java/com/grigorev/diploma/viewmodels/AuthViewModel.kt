@@ -11,6 +11,7 @@ import com.grigorev.diploma.dto.PhotoModel
 import com.grigorev.diploma.error.AppError
 import com.grigorev.diploma.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -19,10 +20,9 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val appAuth: AppAuth
 ) : ViewModel() {
-    val state = appAuth.state
-        .asLiveData()
+    val state = appAuth.state.asLiveData(Dispatchers.Default)
     val authorized: Boolean
-        get() = state.value != null
+        get() = state.value?.id != 0
 
     private val _error = SingleLiveEvent<Throwable>()
     val error: LiveData<Throwable>

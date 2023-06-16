@@ -6,15 +6,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
+import com.grigorev.diploma.auth.AppAuth
 import com.grigorev.diploma.dto.PhotoModel
 import com.grigorev.diploma.dto.Post
 import com.grigorev.diploma.model.StateModel
 import com.grigorev.diploma.repository.PostRepository
 import com.grigorev.diploma.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -38,19 +42,35 @@ private val empty = Post(
 
 private val noPhoto = PhotoModel()
 
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class PostsViewModel @Inject constructor(
     private val repository: PostRepository,
+    appAuth: AppAuth,
 ) : ViewModel() {
+    private val cached = repository
+        .data
+        .cachedIn(viewModelScope)
+
+    val data: Flow<PagingData<Post>> =
+        appAuth.state
+            .flatMapLatest { (myId, _) ->
+                cached.map { pagingData ->
+                    pagingData.map { post ->
+                        post.copy(
+                            ownedByMe = post.authorId == myId,
+                            likedByMe = post.likeOwnerIds.contains(myId)
+                        )
+                    }
+                }
+            }
+
     private val _dataState = MutableLiveData(StateModel())
-
-    val data: Flow<PagingData<Post>> = repository.data
-        .flowOn(Dispatchers.Default)
-
     val dataState: LiveData<StateModel>
         get() = _dataState
 
     private val edited = MutableLiveData(empty)
+
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
@@ -79,6 +99,26 @@ class PostsViewModel @Inject constructor(
         try {
             _dataState.value = StateModel(refreshing = true)
             repository.removePostById(id)
+            _dataState.value = StateModel()
+        } catch (e: Exception) {
+            _dataState.value = StateModel(error = true)
+        }
+    }
+
+    fun likeById(id: Int) = viewModelScope.launch {
+        try {
+            _dataState.value = StateModel(refreshing = true)
+            repository.likePostById(id)
+            _dataState.value = StateModel()
+        } catch (e: Exception) {
+            _dataState.value = StateModel(error = true)
+        }
+    }
+
+    fun unlikeById(id: Int) = viewModelScope.launch {
+        try {
+            _dataState.value = StateModel(refreshing = true)
+            repository.unlikePostById(id)
             _dataState.value = StateModel()
         } catch (e: Exception) {
             _dataState.value = StateModel(error = true)

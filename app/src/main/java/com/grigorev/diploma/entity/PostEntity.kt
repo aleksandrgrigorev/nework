@@ -18,9 +18,9 @@ data class PostEntity(
     val content: String,
     val likedByMe: Boolean,
     val link: String? = null,
-    val mentionIds: Set<Long> = emptySet(),
+    val mentionIds: Set<Int> = emptySet(),
     val mentionedMe: Boolean,
-    val likeOwnerIds: Set<Long> = emptySet(),
+    val likeOwnerIds: Set<Int> = emptySet(),
     val ownedByMe: Boolean,
     val published: String,
     @Embedded

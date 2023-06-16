@@ -17,7 +17,6 @@ import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
 import com.grigorev.diploma.R
 import com.grigorev.diploma.databinding.FragmentSignUpBinding
-import com.grigorev.diploma.error.ApiException
 import com.grigorev.diploma.viewmodels.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -67,18 +66,6 @@ class SignUpFragment : Fragment() {
 
         authViewModel.photo.observe(viewLifecycleOwner) {
             binding.avatar.setImageURI(it.uri)
-        }
-
-        authViewModel.error.observe(viewLifecycleOwner) {
-            when (it) {
-                is ApiException -> Toast.makeText(
-                    context,
-                    R.string.error_loading,
-                    Toast.LENGTH_LONG
-                ).show()
-
-                else -> Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-            }
         }
 
         binding.registerButton.setOnClickListener {

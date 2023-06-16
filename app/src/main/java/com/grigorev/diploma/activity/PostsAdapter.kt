@@ -3,6 +3,7 @@ package com.grigorev.diploma.activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,8 @@ import java.util.Locale
 interface OnInteractionListener {
     fun onEdit(post: Post) {}
     fun onRemove(post: Post) {}
+
+    fun onLike(post: Post) {}
 
 }
 
@@ -60,6 +63,10 @@ class PostViewHolder(
             published.text = publishedTimeFormatted
             content.text = post.content
 
+            like.isChecked = post.likedByMe
+            like.text = "${post.likeOwnerIds.size}"
+
+            menu.isVisible = post.ownedByMe
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.options_post)
@@ -79,6 +86,10 @@ class PostViewHolder(
                         }
                     }
                 }.show()
+            }
+
+            like.setOnClickListener {
+                onInteractionListener.onLike(post)
             }
         }
     }
