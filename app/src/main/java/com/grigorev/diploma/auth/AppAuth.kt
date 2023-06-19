@@ -51,21 +51,19 @@ class AppAuth @Inject constructor(
 
     @Synchronized
     fun setAuth(id: Int, token: String?) {
-        _state.value = AuthState(id, token)
         prefs.edit {
             putInt(idKey, id)
             putString(tokenKey, token)
-            apply()
         }
+        _state.value = AuthState(id, token)
     }
 
     @Synchronized
     fun removeAuth() {
-        _state.value = AuthState()
         with(prefs.edit()) {
             clear()
-            commit()
         }
+        _state.value = AuthState()
     }
 
     @InstallIn(SingletonComponent::class)

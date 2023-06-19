@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.io.File
+import java.time.Instant
 import javax.inject.Inject
 
 private val empty = Post(
@@ -36,7 +37,7 @@ private val empty = Post(
     mentionedMe = false,
     likeOwnerIds = emptySet(),
     ownedByMe = false,
-    published = "",
+    published = "${Instant.now()}",
     attachment = null
 )
 
@@ -83,18 +84,6 @@ class PostsViewModel @Inject constructor(
     val photo: LiveData<PhotoModel>
         get() = _photo
 
-    init {
-        loadPosts()
-    }
-
-    fun loadPosts() = viewModelScope.launch {
-        try {
-            repository.getAllPosts()
-        } catch (e: Exception) {
-            throw e
-        }
-    }
-
     fun removeById(id: Int) = viewModelScope.launch {
         try {
             _dataState.value = StateModel(refreshing = true)
@@ -127,12 +116,12 @@ class PostsViewModel @Inject constructor(
 
     fun save() {
         edited.value?.let {
-            _postCreated.value = Unit
             viewModelScope.launch {
+                _dataState.value = StateModel(loading = true)
                 try {
                     repository.savePost(it)
                     _dataState.value = StateModel()
-
+                    _postCreated.value = Unit
                 } catch (e: Exception) {
                     _dataState.value = StateModel(error = true)
                 }

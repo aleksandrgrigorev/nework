@@ -106,8 +106,7 @@ class NewPostFragment : Fragment() {
         }, viewLifecycleOwner)
 
         viewModel.postCreated.observe(viewLifecycleOwner) {
-            viewModel.loadPosts()
-            findNavController().navigateUp()
+            findNavController().navigate(R.id.action_newPostFragment_to_navigation_posts)
         }
 
         viewModel.error.observe(viewLifecycleOwner) {

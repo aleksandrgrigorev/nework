@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface PostRepository {
     val data: Flow<PagingData<Post>>
 
-    suspend fun getAllPosts()
-
     suspend fun savePost(post: Post)
     suspend fun removePostById(id: Int)
 

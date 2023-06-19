@@ -69,7 +69,6 @@ class PostsFragment : Fragment() {
                             false -> postsViewModel.likeById(post.id)
                         }
                     }
-
                     false -> unauthorizedAccessAttempt()
                 }
             }

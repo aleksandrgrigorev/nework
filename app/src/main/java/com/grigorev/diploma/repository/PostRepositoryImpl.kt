@@ -11,7 +11,6 @@ import com.grigorev.diploma.dao.PostRemoteKeyDao
 import com.grigorev.diploma.db.AppDb
 import com.grigorev.diploma.dto.Post
 import com.grigorev.diploma.entity.PostEntity
-import com.grigorev.diploma.entity.toEntity
 import com.grigorev.diploma.error.ApiException
 import com.grigorev.diploma.error.NetworkException
 import com.grigorev.diploma.error.UnknownException
@@ -34,24 +33,6 @@ class PostRepositoryImpl @Inject constructor(
         remoteMediator = PostRemoteMediator(postsApiService, postDao, postRemoteKeyDao, appDb)
     ).flow
         .map { it.map(PostEntity::toDto) }
-
-    override suspend fun getAllPosts() {
-        val body: List<Post>
-        try {
-            val response = postsApiService.getAllPosts()
-            if (!response.isSuccessful) {
-                throw ApiException(response.code(), response.message())
-            }
-            body = response.body() ?: throw ApiException(response.code(), response.message())
-            postDao.insert(body.toEntity())
-        } catch (e: ApiException) {
-            throw e
-        } catch (e: IOException) {
-            throw NetworkException
-        } catch (e: Exception) {
-            throw UnknownException
-        }
-    }
 
     override suspend fun savePost(post: Post) {
         try {
