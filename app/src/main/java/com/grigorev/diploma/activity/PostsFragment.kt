@@ -124,12 +124,7 @@ class PostsFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
                 when (menuItem.itemId) {
                     R.id.logout -> {
-                        appAuth.removeAuth()
-                        Toast.makeText(
-                            requireContext(),
-                            R.string.logout_successful,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        SignOutFragment().show(childFragmentManager, "logoutDialog")
                         true
                     }
 

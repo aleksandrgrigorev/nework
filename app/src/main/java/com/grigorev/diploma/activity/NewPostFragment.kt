@@ -17,6 +17,7 @@ import com.grigorev.diploma.R
 import com.grigorev.diploma.databinding.FragmentNewPostBinding
 import com.grigorev.diploma.util.AndroidUtils
 import com.grigorev.diploma.util.StringArg
+import com.grigorev.diploma.viewmodels.AuthViewModel
 import com.grigorev.diploma.viewmodels.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,6 +31,7 @@ class NewPostFragment : Fragment() {
     }
 
     private val viewModel: PostsViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,6 +100,7 @@ class NewPostFragment : Fragment() {
                     }
                     R.id.logout -> {
                         SignOutFragment().show(childFragmentManager, "logoutDialog")
+                        if (!authViewModel.authorized) findNavController().navigateUp()
                         true
                     }
                     else -> false
