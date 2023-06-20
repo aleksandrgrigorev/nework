@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/common_spacing"
+
         android:paddingTop="@dimen/common_spacing">
 
         <ImageView
@@ -18,6 +18,7 @@
             android:layout_width="@dimen/posts_avatar_size"
             android:layout_height="@dimen/posts_avatar_size"
             android:layout_marginBottom="@dimen/common_spacing"
+            android:layout_marginStart="@dimen/common_spacing"
             android:contentDescription="@string/author_avatar"
             app:layout_constraintBottom_toBottomOf="@id/header"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +75,7 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/common_spacing"
+            android:layout_marginHorizontal="@dimen/common_spacing"
             android:autoLink="web"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header"
@@ -84,7 +85,7 @@
             android:id="@+id/image_attachment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/common_spacing"
+            android:layout_marginHorizontal="@dimen/common_spacing"
             android:paddingTop="@dimen/attachment_spacing"
             android:paddingBottom="@dimen/attachment_spacing"
             android:visibility="gone"
@@ -98,64 +99,72 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="play_button, audio_bar, pause_button, stop_button"
+            app:constraint_referenced_ids="audio_bar, audio_control"
             tools:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/play_button"
-            android:layout_marginTop="@dimen/common_spacing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:src="@drawable/ic_play_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_attachment"/>
-
-        <ImageView
-            android:id="@+id/pause_button"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/common_spacing"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:src="@drawable/ic_pause_24"
-            app:layout_constraintStart_toEndOf="@id/play_button"
-            app:layout_constraintTop_toBottomOf="@id/image_attachment"/>
-
-        <ImageView
-            android:id="@+id/stop_button"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/common_spacing"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:src="@drawable/ic_stop_24"
-            app:layout_constraintStart_toEndOf="@id/pause_button"
-            app:layout_constraintTop_toBottomOf="@id/image_attachment"/>
 
         <SeekBar
             android:id="@+id/audio_bar"
             android:layout_width="0dp"
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="@dimen/common_spacing"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/common_spacing"
             android:indeterminate="false"
             android:progress="0"
             app:layout_constraintTop_toBottomOf="@id/image_attachment"
-            app:layout_constraintStart_toEndOf="@id/stop_button"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/video_group"
+        <LinearLayout
+            android:id="@+id/audio_control"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids=""
-            tools:visibility="visible" />
+            android:layout_marginHorizontal="@dimen/common_spacing"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/audio_bar">
+
+            <ImageButton
+                android:id="@+id/play_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:src="@drawable/ic_play_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/audio_bar"/>
+
+            <ImageButton
+                android:id="@+id/pause_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:src="@drawable/ic_pause_24"
+                app:layout_constraintStart_toEndOf="@id/play_button"
+                app:layout_constraintTop_toBottomOf="@id/audio_bar"/>
+
+            <ImageButton
+                android:id="@+id/stop_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:src="@drawable/ic_stop_24"
+                app:layout_constraintStart_toEndOf="@id/pause_button"
+                app:layout_constraintTop_toBottomOf="@id/audio_bar"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/common_spacing"
+            android:clickable="true"
+            android:src="@drawable/video_24"
+            app:layout_constraintTop_toBottomOf="@id/audio_control" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/footer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="play_button,image_attachment, audio_bar" />
+            app:constraint_referenced_ids="video" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like"
@@ -164,6 +173,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:contentDescription="@string/like"
+            android:layout_marginStart="@dimen/common_spacing"
             app:icon="@drawable/ic_like_24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/footer" />

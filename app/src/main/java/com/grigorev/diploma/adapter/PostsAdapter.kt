@@ -1,4 +1,4 @@
-package com.grigorev.diploma.activity
+package com.grigorev.diploma.adapter
 
 import android.media.MediaPlayer
 import android.os.Handler
@@ -25,6 +25,8 @@ interface OnInteractionListener {
     fun onRemove(post: Post) {}
 
     fun onLike(post: Post) {}
+
+    fun onWatchVideo(post: Post) {}
 }
 
 class PostsAdapter(
@@ -60,12 +62,12 @@ class PostViewHolder(
                 when (post.attachment.type) {
                     AttachmentType.IMAGE -> imageAttachment.visibility = View.VISIBLE
                     AttachmentType.AUDIO -> audioGroup.visibility = View.VISIBLE
-                    AttachmentType.VIDEO -> videoGroup.visibility = View.VISIBLE
+                    AttachmentType.VIDEO -> video.visibility = View.VISIBLE
                 }
             } else {
                 imageAttachment.visibility = View.GONE
                 audioGroup.visibility = View.GONE
-                videoGroup.visibility = View.VISIBLE
+                video.visibility = View.VISIBLE
             }
 
             imageAttachment.visibility =
@@ -74,7 +76,7 @@ class PostViewHolder(
             audioGroup.visibility =
                 if (post.attachment != null && post.attachment.type == AttachmentType.AUDIO) View.VISIBLE else View.GONE
 
-            videoGroup.visibility =
+            video.visibility =
                 if (post.attachment != null && post.attachment.type == AttachmentType.VIDEO) View.VISIBLE else View.GONE
 
             Glide.with(authorAvatar)
@@ -142,6 +144,10 @@ class PostViewHolder(
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {}
             })
+
+            video.setOnClickListener {
+                onInteractionListener.onWatchVideo(post)
+            }
 
             like.isChecked = post.likedByMe
             like.text = "${post.likeOwnerIds.size}"

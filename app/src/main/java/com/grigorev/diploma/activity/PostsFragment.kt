@@ -1,5 +1,7 @@
 package com.grigorev.diploma.activity
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -17,6 +19,8 @@ import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
 import com.grigorev.diploma.R
 import com.grigorev.diploma.activity.NewPostFragment.Companion.textArg
+import com.grigorev.diploma.adapter.OnInteractionListener
+import com.grigorev.diploma.adapter.PostsAdapter
 import com.grigorev.diploma.auth.AppAuth
 import com.grigorev.diploma.databinding.FragmentPostsBinding
 import com.grigorev.diploma.dto.Post
@@ -72,6 +76,17 @@ class PostsFragment : Fragment() {
                     false -> unauthorizedAccessAttempt()
                 }
             }
+
+            override fun onWatchVideo(post: Post) {
+                try {
+                    val uri = Uri.parse(post.attachment?.url)
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.setDataAndType(uri, "video/*")
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(context, R.string.error_loading, Toast.LENGTH_SHORT).show()
+                }
+            }
         })
 
         lifecycleScope.launch {
@@ -98,10 +113,7 @@ class PostsFragment : Fragment() {
             }
         }
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            adapter.refresh()
-        }
-
+        binding.swipeRefreshLayout.setOnRefreshListener { adapter.refresh() }
 
         postsViewModel.error.observe(viewLifecycleOwner) {
             Snackbar.make(requireView(), it.message as CharSequence, Snackbar.LENGTH_LONG).show()
