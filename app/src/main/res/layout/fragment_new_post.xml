@@ -30,19 +30,22 @@
                 android:padding="@dimen/common_spacing" />
 
             <FrameLayout
-                android:id="@+id/photoContainer"
+                android:id="@+id/mediaContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <ImageView
-                    android:id="@+id/photo"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/media"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:contentDescription="@string/description_photo" />
+                    android:contentDescription="@string/description_media"
+                    tools:srcCompat="@tools:sample/avatars" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/removePhoto"
+                    android:id="@+id/removeMedia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
@@ -71,6 +74,15 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/takePhoto"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/description_take_photo"
+            android:padding="@dimen/common_spacing"
+            app:icon="@drawable/ic_camera_24dp" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/pickPhoto"
             style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
@@ -80,13 +92,22 @@
             app:icon="@drawable/ic_photo_24dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/takePhoto"
+            android:id="@+id/pickVideo"
             style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/description_take_photo"
+            android:contentDescription="@string/description_select_video"
             android:padding="@dimen/common_spacing"
-            app:icon="@drawable/ic_camera_24dp" />
+            app:icon="@drawable/ic_video_24" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pickAudio"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/description_select_audio"
+            android:padding="@dimen/common_spacing"
+            app:icon="@drawable/ic_audio_24" />
     </LinearLayout>
 
 

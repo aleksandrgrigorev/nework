@@ -1,8 +1,13 @@
 package com.grigorev.diploma.activity
 
+import android.media.MediaPlayer
+import android.os.Handler
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.SeekBar
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -10,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.grigorev.diploma.R
 import com.grigorev.diploma.databinding.ItemPostBinding
+import com.grigorev.diploma.dto.AttachmentType
 import com.grigorev.diploma.dto.Post
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -19,7 +25,6 @@ interface OnInteractionListener {
     fun onRemove(post: Post) {}
 
     fun onLike(post: Post) {}
-
 }
 
 class PostsAdapter(
@@ -41,19 +46,41 @@ class PostViewHolder(
     private val onInteractionListener: OnInteractionListener
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'", Locale.ENGLISH)
-    val formatter = SimpleDateFormat("dd MMMM yyyy HH:mm", Locale.ENGLISH)
+    private val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'", Locale.ENGLISH)
+    private val formatter = SimpleDateFormat("dd MMMM yyyy HH:mm", Locale.ENGLISH)
+
+    private var mp: MediaPlayer? = null
 
     fun bind(post: Post) {
 
         val publishedTimeFormatted = parser.parse(post.published)?.let { formatter.format(it) }
 
-        Glide.with(binding.authorAvatar)
-            .load(post.authorAvatar ?: R.mipmap.ic_launcher)
-            .circleCrop()
-            .into(binding.authorAvatar)
-
         binding.apply {
+            if (post.attachment != null) {
+                when (post.attachment.type) {
+                    AttachmentType.IMAGE -> imageAttachment.visibility = View.VISIBLE
+                    AttachmentType.AUDIO -> audioGroup.visibility = View.VISIBLE
+                    AttachmentType.VIDEO -> videoGroup.visibility = View.VISIBLE
+                }
+            } else {
+                imageAttachment.visibility = View.GONE
+                audioGroup.visibility = View.GONE
+                videoGroup.visibility = View.VISIBLE
+            }
+
+            imageAttachment.visibility =
+                if (post.attachment != null && post.attachment.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
+
+            audioGroup.visibility =
+                if (post.attachment != null && post.attachment.type == AttachmentType.AUDIO) View.VISIBLE else View.GONE
+
+            videoGroup.visibility =
+                if (post.attachment != null && post.attachment.type == AttachmentType.VIDEO) View.VISIBLE else View.GONE
+
+            Glide.with(authorAvatar)
+                .load(post.authorAvatar ?: R.drawable.ic_person_24)
+                .circleCrop()
+                .into(authorAvatar)
 
             author.text = itemView.context.getString(
                 R.string.author_job,
@@ -63,8 +90,69 @@ class PostViewHolder(
             published.text = publishedTimeFormatted
             content.text = post.content
 
+            post.attachment?.apply {
+                Glide.with(imageAttachment)
+                    .load(this.url)
+                    .into(imageAttachment)
+            }
+
+            playButton.setOnClickListener {
+                if (mp == null) {
+                    mp = MediaPlayer.create(it.context, post.attachment?.url?.toUri())
+
+                    audioBar.max = mp!!.duration
+                    val handler = Handler()
+                    handler.postDelayed(object : Runnable {
+                        override fun run() {
+                            try {
+                                audioBar.progress = mp!!.currentPosition
+                                handler.postDelayed(this, 1000)
+                            } catch (e: Exception) {
+                                audioBar.progress = 0
+                            }
+                        }
+                    }, 0)
+
+                    mp?.start()
+                }
+            }
+
+            pauseButton.setOnClickListener {
+                if (mp != null) mp?.pause()
+            }
+
+            stopButton.setOnClickListener {
+                if (mp != null) {
+                    mp?.stop()
+                    mp?.reset()
+                    mp?.release()
+                    mp = null
+                }
+            }
+
+            audioBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    if (fromUser) mp?.seekTo(progress)
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
+
             like.isChecked = post.likedByMe
             like.text = "${post.likeOwnerIds.size}"
+
+            like.setOnClickListener {
+                onInteractionListener.onLike(post)
+            }
+
+            like.setOnLongClickListener {
+                TODO("Bottom sheet likerIds to list of likers")
+            }
 
             menu.isVisible = post.ownedByMe
             menu.setOnClickListener {
@@ -87,13 +175,8 @@ class PostViewHolder(
                     }
                 }.show()
             }
-
-            like.setOnClickListener {
-                onInteractionListener.onLike(post)
-            }
         }
     }
-
 }
 
 class PostDiffCallback : DiffUtil.ItemCallback<Post>() {

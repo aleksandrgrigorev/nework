@@ -27,7 +27,7 @@ class AuthViewModel @Inject constructor(
     val error: LiveData<Throwable>
         get() = _error
 
-    val noPhoto = PhotoModel(null, null)
+    val noPhoto = PhotoModel()
 
     private val _photo = MutableLiveData(noPhoto)
     val photo: LiveData<PhotoModel>

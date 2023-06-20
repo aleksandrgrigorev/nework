@@ -13,9 +13,11 @@
     <string name="published_time">published time</string>
     <string name="menu_remove">Remove</string>
     <string name="menu_edit">Edit</string>
-    <string name="description_photo">Photo</string>
+    <string name="description_media">Media attachment</string>
     <string name="remove">Remove</string>
     <string name="description_select_photo">Select a photo</string>
+    <string name="description_select_audio">Select an audio</string>
+    <string name="description_select_video">Select a video</string>
     <string name="description_take_photo">Take a photo</string>
     <string name="menu_save">Save</string>
     <string name="sign_up">Sign up</string>
@@ -46,4 +48,5 @@
     <string name="auth_successful">Authorization successful. Welcome!</string>
     <string name="logout_successful">You have logged out</string>
     <string name="pick_avatar">Click on an avatar to pick a picture</string>
+    <string name="empty_post">Post can\'t be empty</string>
 </resources>

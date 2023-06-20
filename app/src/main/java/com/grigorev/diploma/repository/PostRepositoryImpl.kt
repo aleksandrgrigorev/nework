@@ -9,6 +9,10 @@ import com.grigorev.diploma.api.PostsApiService
 import com.grigorev.diploma.dao.PostDao
 import com.grigorev.diploma.dao.PostRemoteKeyDao
 import com.grigorev.diploma.db.AppDb
+import com.grigorev.diploma.dto.Attachment
+import com.grigorev.diploma.dto.AttachmentType
+import com.grigorev.diploma.dto.Media
+import com.grigorev.diploma.dto.MediaUpload
 import com.grigorev.diploma.dto.Post
 import com.grigorev.diploma.entity.PostEntity
 import com.grigorev.diploma.error.ApiException
@@ -16,6 +20,9 @@ import com.grigorev.diploma.error.NetworkException
 import com.grigorev.diploma.error.UnknownException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import javax.inject.Inject
 
@@ -94,6 +101,41 @@ class PostRepositoryImpl @Inject constructor(
             throw NetworkException
         } catch (e: Exception) {
             throw UnknownError()
+        }
+    }
+
+    override suspend fun upload(upload: MediaUpload): Media {
+        try {
+            val data = MultipartBody.Part.createFormData(
+                "file", "name", upload.inputStream.readBytes()
+                    .toRequestBody("*/*".toMediaTypeOrNull())
+            )
+            val response = postsApiService.upload(data)
+            if (!response.isSuccessful) {
+                throw ApiException(response.code(), response.message())
+            }
+            return response.body() ?: throw ApiException(response.code(), response.message())
+        } catch (e: IOException) {
+            throw NetworkException
+        } catch (e: Exception) {
+            throw UnknownException
+        }
+    }
+
+    override suspend fun saveWithAttachment(
+        post: Post,
+        upload: MediaUpload,
+        type: AttachmentType
+    ) {
+        try {
+            val media = upload(upload)
+            val postWithAttachment =
+                post.copy(attachment = Attachment(media.id, type))
+            savePost(postWithAttachment)
+        } catch (e: IOException) {
+            throw NetworkException
+        } catch (e: Exception) {
+            throw UnknownException
         }
     }
 }

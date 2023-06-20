@@ -1,7 +1,7 @@
 package com.grigorev.diploma.dto
 
 import android.net.Uri
-import java.io.File
+import java.io.InputStream
 
 data class Post(
     val id: Int = 0,
@@ -29,4 +29,10 @@ enum class AttachmentType {
     IMAGE, AUDIO, VIDEO
 }
 
-data class PhotoModel(val uri: Uri? = null, val file: File? = null)
+data class Media(val id: String)
+
+data class MediaModel(
+    val uri: Uri? = null,
+    val inputStream: InputStream? = null,
+    val type: AttachmentType? = null
+)

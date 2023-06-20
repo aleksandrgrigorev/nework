@@ -1,11 +1,15 @@
 package com.grigorev.diploma.api
 
+import com.grigorev.diploma.dto.Media
 import com.grigorev.diploma.dto.Post
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -37,4 +41,8 @@ interface PostsApiService {
 
     @DELETE("/api/posts/{post_id}/likes")
     suspend fun unlikePostById(@Path("post_id") id: Int): Response<Post>
+
+    @Multipart
+    @POST("/api/media")
+    suspend fun upload(@Part media: MultipartBody.Part): Response<Media>
 }

@@ -81,22 +81,81 @@
             tools:text="Post content" />
 
         <ImageView
-            android:id="@+id/attachment"
+            android:id="@+id/image_attachment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/common_spacing"
             android:paddingTop="@dimen/attachment_spacing"
             android:paddingBottom="@dimen/attachment_spacing"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/content"
             app:layout_constraintTop_toBottomOf="@id/content"
-            tools:srcCompat="Attachment" />
+            tools:srcCompat="@tools:sample/avatars"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/audio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="play_button, audio_bar, pause_button, stop_button"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/play_button"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/ic_play_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image_attachment"/>
+
+        <ImageView
+            android:id="@+id/pause_button"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/ic_pause_24"
+            app:layout_constraintStart_toEndOf="@id/play_button"
+            app:layout_constraintTop_toBottomOf="@id/image_attachment"/>
+
+        <ImageView
+            android:id="@+id/stop_button"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/ic_stop_24"
+            app:layout_constraintStart_toEndOf="@id/pause_button"
+            app:layout_constraintTop_toBottomOf="@id/image_attachment"/>
+
+        <SeekBar
+            android:id="@+id/audio_bar"
+            android:layout_width="0dp"
+            android:layout_marginTop="19dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:progress="0"
+            app:layout_constraintTop_toBottomOf="@id/image_attachment"
+            app:layout_constraintStart_toEndOf="@id/stop_button"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/video_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids=""
+            tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/footer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="attachment" />
+            app:constraint_referenced_ids="play_button,image_attachment, audio_bar" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like"
