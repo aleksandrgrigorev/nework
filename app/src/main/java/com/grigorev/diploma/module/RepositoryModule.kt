@@ -1,5 +1,7 @@
 package com.grigorev.diploma.module
 
+import com.grigorev.diploma.repository.EventRepository
+import com.grigorev.diploma.repository.EventRepositoryImpl
 import com.grigorev.diploma.repository.PostRepository
 import com.grigorev.diploma.repository.PostRepositoryImpl
 import dagger.Binds
@@ -15,4 +17,8 @@ interface RepositoryModule {
     @Singleton
     @Binds
     fun bindsPostRepository(impl: PostRepositoryImpl): PostRepository
+
+    @Singleton
+    @Binds
+    fun bindsEventRepository(impl: EventRepositoryImpl): EventRepository
 }

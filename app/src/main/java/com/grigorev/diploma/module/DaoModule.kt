@@ -1,5 +1,7 @@
 package com.grigorev.diploma.module
 
+import com.grigorev.diploma.dao.EventDao
+import com.grigorev.diploma.dao.EventRemoteKeyDao
 import com.grigorev.diploma.dao.PostDao
 import com.grigorev.diploma.dao.PostRemoteKeyDao
 import com.grigorev.diploma.db.AppDb
@@ -17,4 +19,9 @@ object DaoModule {
     @Provides
     fun providePostRemoteKeyDao(db: AppDb): PostRemoteKeyDao = db.postRemoteKeyDao()
 
+    @Provides
+    fun provideEventDao(db: AppDb): EventDao = db.eventDao()
+
+    @Provides
+    fun provideEventRemoteKeyDao(db: AppDb): EventRemoteKeyDao = db.eventRemoteKeyDao()
 }

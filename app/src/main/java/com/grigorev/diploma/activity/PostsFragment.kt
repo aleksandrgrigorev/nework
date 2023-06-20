@@ -19,11 +19,12 @@ import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
 import com.grigorev.diploma.R
 import com.grigorev.diploma.activity.NewPostFragment.Companion.textArg
-import com.grigorev.diploma.adapter.OnInteractionListener
+import com.grigorev.diploma.adapter.OnPostInteractionListener
 import com.grigorev.diploma.adapter.PostsAdapter
 import com.grigorev.diploma.auth.AppAuth
 import com.grigorev.diploma.databinding.FragmentPostsBinding
 import com.grigorev.diploma.dto.Post
+import com.grigorev.diploma.util.DateTimeFormatter
 import com.grigorev.diploma.viewmodels.AuthViewModel
 import com.grigorev.diploma.viewmodels.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +50,7 @@ class PostsFragment : Fragment() {
     ): View {
         val binding = FragmentPostsBinding.inflate(inflater, container, false)
 
-        val adapter = PostsAdapter(object : OnInteractionListener {
+        val adapter = PostsAdapter(DateTimeFormatter(), object : OnPostInteractionListener {
 
             override fun onEdit(post: Post) {
                 postsViewModel.edit(post)

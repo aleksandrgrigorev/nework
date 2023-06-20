@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:drawable="@drawable/ic_like_filled_24dp"
+        android:drawable="@drawable/ic_check_box_checked_24"
         android:state_checked="true"
         />
     <item
-        android:drawable="@drawable/ic_like_outlined_24dp"
+        android:drawable="@drawable/ic_check_box_blank_24"
         />
 </selector>

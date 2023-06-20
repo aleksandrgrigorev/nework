@@ -63,23 +63,23 @@ class PostRemoteMediator(
                         postDao.removeAll()
                     }
 
-                    LoadType.PREPEND -> {
-                        if (body.isNotEmpty()) {
-                            postRemoteKeyDao.insert(
-                                PostRemoteKeyEntity(
-                                    PostRemoteKeyEntity.KeyType.AFTER,
-                                    body.first().id
-                                ),
-                            )
-                        }
-                    }
-
                     LoadType.APPEND -> {
                         if (body.isNotEmpty()) {
                             postRemoteKeyDao.insert(
                                 PostRemoteKeyEntity(
                                     PostRemoteKeyEntity.KeyType.BEFORE,
                                     body.last().id
+                                ),
+                            )
+                        }
+                    }
+
+                    LoadType.PREPEND -> {
+                        if (body.isNotEmpty()) {
+                            postRemoteKeyDao.insert(
+                                PostRemoteKeyEntity(
+                                    PostRemoteKeyEntity.KeyType.AFTER,
+                                    body.first().id
                                 ),
                             )
                         }

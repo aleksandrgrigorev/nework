@@ -17,24 +17,24 @@ import com.grigorev.diploma.R
 import com.grigorev.diploma.databinding.ItemPostBinding
 import com.grigorev.diploma.dto.AttachmentType
 import com.grigorev.diploma.dto.Post
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.grigorev.diploma.util.DateTimeFormatter
 
-interface OnInteractionListener {
-    fun onEdit(post: Post) {}
-    fun onRemove(post: Post) {}
+interface OnPostInteractionListener {
+    fun onEdit(post: Post)
+    fun onRemove(post: Post)
 
-    fun onLike(post: Post) {}
+    fun onLike(post: Post)
 
-    fun onWatchVideo(post: Post) {}
+    fun onWatchVideo(post: Post)
 }
 
 class PostsAdapter(
-    private val onInteractionListener: OnInteractionListener,
+    private val dateTimeFormatter: DateTimeFormatter,
+    private val onPostInteractionListener: OnPostInteractionListener,
 ) : PagingDataAdapter<Post, PostViewHolder>(PostDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, onInteractionListener)
+        return PostViewHolder(binding, dateTimeFormatter, onPostInteractionListener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -45,17 +45,13 @@ class PostsAdapter(
 
 class PostViewHolder(
     private val binding: ItemPostBinding,
-    private val onInteractionListener: OnInteractionListener
+    private val dateTimeFormatter: DateTimeFormatter,
+    private val onPostInteractionListener: OnPostInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
-
-    private val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'", Locale.ENGLISH)
-    private val formatter = SimpleDateFormat("dd MMMM yyyy HH:mm", Locale.ENGLISH)
 
     private var mp: MediaPlayer? = null
 
     fun bind(post: Post) {
-
-        val publishedTimeFormatted = parser.parse(post.published)?.let { formatter.format(it) }
 
         binding.apply {
             if (post.attachment != null) {
@@ -89,7 +85,7 @@ class PostViewHolder(
                 post.author,
                 post.authorJob ?: itemView.context.resources.getString(R.string.null_job)
             )
-            published.text = publishedTimeFormatted
+            published.text = dateTimeFormatter.formatDateTime(post.published)
             content.text = post.content
 
             post.attachment?.apply {
@@ -146,14 +142,14 @@ class PostViewHolder(
             })
 
             video.setOnClickListener {
-                onInteractionListener.onWatchVideo(post)
+                onPostInteractionListener.onWatchVideo(post)
             }
 
             like.isChecked = post.likedByMe
             like.text = "${post.likeOwnerIds.size}"
 
             like.setOnClickListener {
-                onInteractionListener.onLike(post)
+                onPostInteractionListener.onLike(post)
             }
 
             like.setOnLongClickListener {
@@ -167,12 +163,12 @@ class PostViewHolder(
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
                             R.id.remove -> {
-                                onInteractionListener.onRemove(post)
+                                onPostInteractionListener.onRemove(post)
                                 true
                             }
 
                             R.id.edit -> {
-                                onInteractionListener.onEdit(post)
+                                onPostInteractionListener.onEdit(post)
                                 true
                             }
 

@@ -16,8 +16,8 @@
             android:id="@+id/authorAvatar"
             android:layout_width="@dimen/posts_avatar_size"
             android:layout_height="@dimen/posts_avatar_size"
-            android:layout_marginBottom="@dimen/common_spacing"
             android:layout_marginStart="@dimen/common_spacing"
+            android:layout_marginBottom="@dimen/common_spacing"
             android:contentDescription="@string/author_avatar"
             app:layout_constraintBottom_toBottomOf="@id/header"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_spacing"
             android:ellipsize="end"
+            android:textStyle="bold"
             android:singleLine="true"
             android:text="@string/author_job"
             app:layout_constraintBottom_toTopOf="@+id/published"
@@ -93,89 +94,71 @@
             tools:srcCompat="@tools:sample/avatars"
             tools:visibility="visible" />
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/audio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="audio_bar, audio_control"
-            tools:visibility="visible" />
-
-        <SeekBar
-            android:id="@+id/audio_bar"
-            android:layout_width="0dp"
-            android:layout_marginTop="@dimen/common_spacing"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/common_spacing"
-            android:indeterminate="false"
-            android:progress="0"
-            app:layout_constraintTop_toBottomOf="@id/image_attachment"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <LinearLayout
-            android:id="@+id/audio_control"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/common_spacing"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/audio_bar">
-
-            <ImageButton
-                android:id="@+id/play_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:src="@drawable/ic_play_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/audio_bar"/>
-
-            <ImageButton
-                android:id="@+id/pause_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:src="@drawable/ic_pause_24"
-                app:layout_constraintStart_toEndOf="@id/play_button"
-                app:layout_constraintTop_toBottomOf="@id/audio_bar"/>
-
-            <ImageButton
-                android:id="@+id/stop_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:src="@drawable/ic_stop_24"
-                app:layout_constraintStart_toEndOf="@id/pause_button"
-                app:layout_constraintTop_toBottomOf="@id/audio_bar"/>
-        </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/video"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/common_spacing"
-            android:clickable="true"
-            android:src="@drawable/video_24"
-            app:layout_constraintTop_toBottomOf="@id/audio_control" />
-
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/footer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="video" />
+            app:constraint_referenced_ids="image_attachment" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like"
             style="@style/Widget.AppTheme.LikeCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_spacing"
             android:checkable="true"
             android:contentDescription="@string/like"
-            android:layout_marginStart="@dimen/common_spacing"
             app:icon="@drawable/ic_like_24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/footer" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/participate"
+            style="@style/Widget.AppTheme.LikeCheckBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/participate"
+            android:checkable="true"
+            android:contentDescription="@string/participate"
+            app:icon="@drawable/ic_check_box"
+            app:layout_constraintStart_toEndOf="@id/like"
+            app:layout_constraintTop_toBottomOf="@id/footer" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/participants"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="0dp"
+            android:layout_marginEnd="@dimen/common_spacing"
+            android:layout_height="wrap_content"
+            android:text="@string/participants"
+            android:contentDescription="@string/participants"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/footer" />
+
+        <TextView
+            android:id="@+id/date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/common_spacing"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/event_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/like" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/speakers"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/common_spacing"
+            android:checkable="true"
+            android:contentDescription="@string/like"
+            app:icon="@drawable/ic_person_pin_24"
+            android:text="@string/speakers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/participants" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

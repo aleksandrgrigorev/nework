@@ -49,4 +49,8 @@
     <string name="logout_successful">You have logged out</string>
     <string name="pick_avatar">Click on an avatar to pick a picture</string>
     <string name="empty_post">Post can\'t be empty</string>
+    <string name="participate">I\'m in!</string>
+    <string name="participants">Participants: %1$s</string>
+    <string name="event_date">Event date:\n%1$s</string>
+    <string name="speakers">Speakers: %1$s</string>
 </resources>
