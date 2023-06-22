@@ -17,7 +17,7 @@ import com.grigorev.diploma.R
 import com.grigorev.diploma.databinding.ItemPostBinding
 import com.grigorev.diploma.dto.AttachmentType
 import com.grigorev.diploma.dto.Post
-import com.grigorev.diploma.util.DateTimeFormatter
+import com.grigorev.diploma.util.formatDateTime
 
 interface OnPostInteractionListener {
     fun onEdit(post: Post)
@@ -26,15 +26,15 @@ interface OnPostInteractionListener {
     fun onLike(post: Post)
 
     fun onWatchVideo(post: Post)
+
 }
 
 class PostsAdapter(
-    private val dateTimeFormatter: DateTimeFormatter,
     private val onPostInteractionListener: OnPostInteractionListener,
 ) : PagingDataAdapter<Post, PostViewHolder>(PostDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, dateTimeFormatter, onPostInteractionListener)
+        return PostViewHolder(binding, onPostInteractionListener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -45,7 +45,6 @@ class PostsAdapter(
 
 class PostViewHolder(
     private val binding: ItemPostBinding,
-    private val dateTimeFormatter: DateTimeFormatter,
     private val onPostInteractionListener: OnPostInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -77,6 +76,7 @@ class PostViewHolder(
 
             Glide.with(authorAvatar)
                 .load(post.authorAvatar ?: R.drawable.ic_person_24)
+                .placeholder(R.drawable.ic_person_24)
                 .circleCrop()
                 .into(authorAvatar)
 
@@ -85,7 +85,7 @@ class PostViewHolder(
                 post.author,
                 post.authorJob ?: itemView.context.resources.getString(R.string.null_job)
             )
-            published.text = dateTimeFormatter.formatDateTime(post.published)
+            published.text = formatDateTime(post.published)
             content.text = post.content
 
             post.attachment?.apply {
@@ -150,10 +150,6 @@ class PostViewHolder(
 
             like.setOnClickListener {
                 onPostInteractionListener.onLike(post)
-            }
-
-            like.setOnLongClickListener {
-                TODO("Bottom sheet likerIds to list of likers")
             }
 
             menu.isVisible = post.ownedByMe

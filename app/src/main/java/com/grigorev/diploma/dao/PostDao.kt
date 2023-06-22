@@ -12,9 +12,6 @@ import kotlinx.coroutines.flow.Flow
 interface PostDao {
 
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
-    fun getAllPosts(): Flow<List<PostEntity>>
-
-    @Query("SELECT * FROM PostEntity ORDER BY id DESC")
     fun getPagingSource(): PagingSource<Int, PostEntity>
 
     @Insert(onConflict = REPLACE)

@@ -42,7 +42,7 @@ private val empty = Post(
     attachment = null
 )
 
-private val noMedia = MediaModel(null, null)
+private val noMedia = MediaModel(null, null, null)
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
@@ -151,7 +151,7 @@ class PostsViewModel @Inject constructor(
         _media.value = MediaModel(uri, inputStream, type)
     }
 
-    fun deleteMedia() {
+    fun removeMedia() {
         _media.value = noMedia
     }
 

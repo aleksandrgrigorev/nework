@@ -28,8 +28,7 @@ import kotlinx.coroutines.launch
 import java.io.InputStream
 import javax.inject.Inject
 
-
-private val empty = Event(
+val emptyEvent = Event(
     id = 0,
     authorId = 0,
     author = "",
@@ -45,11 +44,10 @@ private val noMedia = MediaModel()
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class EventViewModel @Inject constructor(
+class EventsViewModel @Inject constructor(
     private val eventRepository: EventRepository,
     appAuth: AppAuth,
 ) : ViewModel() {
-
     private val cached = eventRepository
         .data
         .cachedIn(viewModelScope)
@@ -68,7 +66,7 @@ class EventViewModel @Inject constructor(
                 }
             }
 
-    val edited = MutableLiveData(empty)
+    val edited = MutableLiveData(emptyEvent)
 
     private val _dataState = MutableLiveData<StateModel>()
     val dataState: LiveData<StateModel>
@@ -77,6 +75,10 @@ class EventViewModel @Inject constructor(
     private val _eventCreated = SingleLiveEvent<Unit>()
     val eventCreated: LiveData<Unit>
         get() = _eventCreated
+
+    private val _error = SingleLiveEvent<Throwable>()
+    val error: LiveData<Throwable>
+        get() = _error
 
     private val _media = MutableLiveData(noMedia)
     val media: LiveData<MediaModel>
@@ -106,7 +108,7 @@ class EventViewModel @Inject constructor(
                 }
             }
         }
-        edited.value = empty
+        edited.value = emptyEvent
         _media.value = noMedia
     }
 
@@ -137,6 +139,10 @@ class EventViewModel @Inject constructor(
         type: AttachmentType?,
     ) {
         _media.value = MediaModel(uri, inputStream, type)
+    }
+
+    fun removeMedia() {
+        _media.value = noMedia
     }
 
     fun removeById(id: Int) = viewModelScope.launch {

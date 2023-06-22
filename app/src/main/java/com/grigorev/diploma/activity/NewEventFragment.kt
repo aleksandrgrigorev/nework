@@ -13,25 +13,26 @@ import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import com.grigorev.diploma.R
-import com.grigorev.diploma.databinding.FragmentNewPostBinding
+import com.grigorev.diploma.databinding.FragmentNewEventBinding
 import com.grigorev.diploma.dto.AttachmentType
 import com.grigorev.diploma.util.AndroidUtils
 import com.grigorev.diploma.util.StringArg
-import com.grigorev.diploma.viewmodels.AuthViewModel
-import com.grigorev.diploma.viewmodels.PostsViewModel
+import com.grigorev.diploma.util.pickDate
+import com.grigorev.diploma.util.pickTime
+import com.grigorev.diploma.viewmodels.EventsViewModel
+import com.grigorev.diploma.viewmodels.emptyEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
-class NewPostFragment : Fragment() {
+class NewEventFragment : Fragment() {
 
     companion object {
         var Bundle.textArg: String? by StringArg
     }
 
-    private val viewModel: PostsViewModel by viewModels()
-    private val authViewModel: AuthViewModel by viewModels()
+    private val eventViewModel: EventsViewModel by viewModels()
 
     var type: AttachmentType? = null
 
@@ -40,12 +41,33 @@ class NewPostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentNewPostBinding.inflate(inflater, container, false)
+        val binding = FragmentNewEventBinding.inflate(inflater, container, false)
 
         arguments?.textArg
             ?.let(binding.edit::setText)
 
         binding.edit.requestFocus()
+
+        val datetime = arguments?.getString("datetime")
+        val date = datetime?.substring(0, 10)
+        val time = datetime?.substring(11)
+
+        if (eventViewModel.edited.value != emptyEvent) {
+            binding.editDate.setText(date)
+            binding.editTime.setText(time)
+        }
+
+        binding.editDate.setOnClickListener {
+            context?.let { item ->
+                pickDate(binding.editDate, item)
+            }
+        }
+
+        binding.editTime.setOnClickListener {
+            context?.let { item ->
+                pickTime(binding.editTime, item)
+            }
+        }
 
         val photoContract =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -61,21 +83,13 @@ class NewPostFragment : Fragment() {
                             val stream = uri?.let {
                                 context?.contentResolver?.openInputStream(it)
                             }
-                            viewModel.changeMedia(uri, stream, type)
+                            eventViewModel.changeMedia(uri, stream, type)
                         }
                     }
                 }
             }
 
-        val mediaContract =
-            registerForActivityResult(ActivityResultContracts.GetContent()) {
-                it?.let {
-                    val stream = context?.contentResolver?.openInputStream(it)
-                    viewModel.changeMedia(it, stream, type)
-                }
-            }
-
-        viewModel.media.observe(viewLifecycleOwner) {
+        eventViewModel.media.observe(viewLifecycleOwner) {
             binding.media.setImageURI(it.uri)
             binding.mediaContainer.isVisible = it.uri != null
         }
@@ -104,21 +118,11 @@ class NewPostFragment : Fragment() {
             type = AttachmentType.IMAGE
         }
 
-        binding.pickAudio.setOnClickListener {
-            mediaContract.launch("audio/*")
-            type = AttachmentType.AUDIO
-        }
-
-        binding.pickVideo.setOnClickListener {
-            mediaContract.launch("video/*")
-            type = AttachmentType.VIDEO
-        }
-
         binding.removeMedia.setOnClickListener {
-            viewModel.removeMedia()
+            eventViewModel.removeMedia()
         }
 
-        viewModel.media.observe(viewLifecycleOwner) {
+        eventViewModel.media.observe(viewLifecycleOwner) {
             if (it?.uri == null) {
                 binding.mediaContainer.visibility = View.GONE
                 return@observe
@@ -138,16 +142,13 @@ class NewPostFragment : Fragment() {
                         if (binding.edit.text.isEmpty()) {
                             Toast.makeText(context, R.string.empty_post, Toast.LENGTH_SHORT).show()
                         } else {
-                            viewModel.changeContent(binding.edit.text.toString())
-                            viewModel.save()
+                            eventViewModel.changeContent(
+                                binding.edit.text.toString(),
+                                "${binding.editDate.text} " + "${binding.editTime.text}"
+                            )
+                            eventViewModel.save()
                             AndroidUtils.hideKeyboard(requireView())
                         }
-                        true
-                    }
-
-                    R.id.logout -> {
-                        SignOutFragment().show(childFragmentManager, "logoutDialog")
-                        if (!authViewModel.authorized) findNavController().navigateUp()
                         true
                     }
 
@@ -156,11 +157,11 @@ class NewPostFragment : Fragment() {
             }
         }, viewLifecycleOwner)
 
-        viewModel.postCreated.observe(viewLifecycleOwner) {
+        eventViewModel.eventCreated.observe(viewLifecycleOwner) {
             findNavController().navigate(R.id.action_newPostFragment_to_navigation_posts)
         }
 
-        viewModel.error.observe(viewLifecycleOwner) {
+        eventViewModel.error.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
         }
 

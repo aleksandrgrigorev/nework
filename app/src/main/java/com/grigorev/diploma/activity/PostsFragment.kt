@@ -16,22 +16,22 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.grigorev.diploma.R
 import com.grigorev.diploma.activity.NewPostFragment.Companion.textArg
+import com.grigorev.diploma.adapter.LoadingStateAdapter
 import com.grigorev.diploma.adapter.OnPostInteractionListener
 import com.grigorev.diploma.adapter.PostsAdapter
-import com.grigorev.diploma.auth.AppAuth
 import com.grigorev.diploma.databinding.FragmentPostsBinding
 import com.grigorev.diploma.dto.Post
-import com.grigorev.diploma.util.DateTimeFormatter
 import com.grigorev.diploma.viewmodels.AuthViewModel
 import com.grigorev.diploma.viewmodels.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -40,9 +40,6 @@ class PostsFragment : Fragment() {
     private val postsViewModel: PostsViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
 
-    @Inject
-    lateinit var appAuth: AppAuth
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,7 +47,7 @@ class PostsFragment : Fragment() {
     ): View {
         val binding = FragmentPostsBinding.inflate(inflater, container, false)
 
-        val adapter = PostsAdapter(DateTimeFormatter(), object : OnPostInteractionListener {
+        val adapter = PostsAdapter(object : OnPostInteractionListener {
 
             override fun onEdit(post: Post) {
                 postsViewModel.edit(post)
@@ -74,6 +71,7 @@ class PostsFragment : Fragment() {
                             false -> postsViewModel.likeById(post.id)
                         }
                     }
+
                     false -> unauthorizedAccessAttempt()
                 }
             }
@@ -89,6 +87,19 @@ class PostsFragment : Fragment() {
                 }
             }
         })
+
+        val itemAnimator: DefaultItemAnimator = object : DefaultItemAnimator() {
+            override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {
+                return true
+            }
+        }
+
+        binding.postsList.itemAnimator = itemAnimator
+
+        binding.postsList.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = LoadingStateAdapter { adapter.retry() },
+            footer = LoadingStateAdapter { adapter.retry() },
+        )
 
         lifecycleScope.launch {
             postsViewModel.data.collect {
@@ -168,5 +179,4 @@ class PostsFragment : Fragment() {
         Toast.makeText(context, R.string.sign_in_to_continue, Toast.LENGTH_LONG).show()
         findNavController().navigate(R.id.action_navigation_posts_to_signInFragment)
     }
-
 }

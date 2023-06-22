@@ -1,6 +1,7 @@
 package com.grigorev.diploma.api
 
 import com.grigorev.diploma.auth.AuthState
+import com.grigorev.diploma.dto.User
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -23,4 +24,10 @@ interface UserApiService {
         @Part("name") name: RequestBody,
         @Part file: MultipartBody.Part?,
     ): Response<AuthState>
+
+    @GET("/api/users")
+    suspend fun getUsers(): Response<List<User>>
+
+    @GET("/api/users/{id}")
+    suspend fun getUserById(@Path("id") id: Int): Response<User>
 }

@@ -3,7 +3,6 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.kapt'
     id 'dagger.hilt.android.plugin'
-//    id 'com.google.gms.google-services'
 }
 
 android {
@@ -67,15 +66,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
 
-    implementation "androidx.room:room-runtime:2.5.1"
-    implementation "androidx.room:room-ktx:2.5.1"
-    implementation "androidx.room:room-paging:2.5.1"
+    implementation "androidx.room:room-runtime:2.5.2"
+    implementation "androidx.room:room-ktx:2.5.2"
+    implementation "androidx.room:room-paging:2.5.2"
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
-    kapt "androidx.room:room-compiler:2.5.1"
-
-//    implementation platform("com.google.firebase:firebase-bom:31.2.2")
-//    implementation "com.google.firebase:firebase-messaging-ktx"
-//    implementation "com.google.android.gms:play-services-base:18.2.0"
+    kapt "androidx.room:room-compiler:2.5.2"
 
     implementation "com.google.code.gson:gson:2.10"
 

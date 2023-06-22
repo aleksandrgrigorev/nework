@@ -14,7 +14,7 @@ import com.grigorev.diploma.R
 import com.grigorev.diploma.databinding.ItemEventBinding
 import com.grigorev.diploma.dto.AttachmentType
 import com.grigorev.diploma.dto.Event
-import com.grigorev.diploma.util.DateTimeFormatter
+import com.grigorev.diploma.util.formatDateTime
 
 interface OnEventInteractionListener {
     fun onEditEvent(event: Event)
@@ -24,13 +24,12 @@ interface OnEventInteractionListener {
 }
 
 class EventAdapter(
-    private val dateTimeFormatter: DateTimeFormatter,
     private val onEventInteractionListener: OnEventInteractionListener,
 ) : PagingDataAdapter<Event, EventViewHolder>(EventDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EventViewHolder(binding, dateTimeFormatter, onEventInteractionListener)
+        return EventViewHolder(binding, onEventInteractionListener)
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
@@ -41,19 +40,22 @@ class EventAdapter(
 
 class EventViewHolder(
     private val binding: ItemEventBinding,
-    private val dateTimeFormatter: DateTimeFormatter,
     private val onEventInteractionListener: OnEventInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(event: Event) {
 
         binding.apply {
-            author.text = event.author
-            published.text = dateTimeFormatter.formatDateTime(event.published)
+            author.text = itemView.context.getString(
+                R.string.author_job,
+                event.author,
+                event.authorJob ?: itemView.context.resources.getString(R.string.null_job)
+            )
+            published.text = formatDateTime(event.published)
             content.text = event.content
             dateTime.text = itemView.context.getString(
                 R.string.event_date,
-                dateTimeFormatter.formatDateTime(event.datetime)
+                formatDateTime(event.datetime)
             )
             speakers.text =
                 itemView.context.getString(R.string.speakers, event.speakerIds.size.toString())
@@ -65,8 +67,9 @@ class EventViewHolder(
             imageAttachment.visibility =
                 if (event.attachment != null && event.attachment.type == AttachmentType.IMAGE) VISIBLE else GONE
 
-            Glide.with(itemView)
-                .load("${event.authorAvatar}")
+            Glide.with(authorAvatar)
+                .load(event.authorAvatar ?: R.drawable.ic_person_24)
+                .placeholder(R.drawable.ic_person_24)
                 .circleCrop()
                 .into(authorAvatar)
 

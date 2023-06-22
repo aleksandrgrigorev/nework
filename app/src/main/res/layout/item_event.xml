@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/layout_margin"
+    app:cardCornerRadius="@dimen/item_corner_radius"
     app:cardElevation="@dimen/fab_margin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,9 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_spacing"
             android:ellipsize="end"
-            android:textStyle="bold"
             android:singleLine="true"
             android:text="@string/author_job"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/published"
             app:layout_constraintEnd_toStartOf="@id/menu"
             app:layout_constraintStart_toEndOf="@id/authorAvatar"
@@ -60,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/common_spacing"
             android:contentDescription="@string/post_menu"
+            app:cornerRadius="@dimen/button_corner_radius"
             app:icon="@drawable/ic_more_vert_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -72,13 +74,46 @@
             app:constraint_referenced_ids="authorAvatar,published,menu" />
 
         <TextView
+            android:id="@+id/date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/common_spacing"
+            android:text="@string/event_date"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/barrier"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/speakers"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/common_spacing"
+            android:clickable="true"
+            android:contentDescription="@string/like"
+            android:text="@string/speakers"
+            app:cornerRadius="@dimen/button_corner_radius"
+            app:icon="@drawable/ic_person_pin_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="speakers, date_time" />
+
+        <TextView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/common_spacing"
             android:autoLink="web"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintTop_toBottomOf="@id/barrier"
             tools:text="Post content" />
 
         <ImageView
@@ -109,6 +144,7 @@
             android:layout_marginStart="@dimen/common_spacing"
             android:checkable="true"
             android:contentDescription="@string/like"
+            app:cornerRadius="@dimen/button_corner_radius"
             app:icon="@drawable/ic_like_24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/footer" />
@@ -118,9 +154,10 @@
             style="@style/Widget.AppTheme.LikeCheckBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/participate"
             android:checkable="true"
             android:contentDescription="@string/participate"
+            android:text="@string/participate"
+            app:cornerRadius="@dimen/button_corner_radius"
             app:icon="@drawable/ic_check_box"
             app:layout_constraintStart_toEndOf="@id/like"
             app:layout_constraintTop_toBottomOf="@id/footer" />
@@ -129,36 +166,14 @@
             android:id="@+id/participants"
             style="@style/Widget.AppTheme.IconButton"
             android:layout_width="0dp"
-            android:layout_marginEnd="@dimen/common_spacing"
             android:layout_height="wrap_content"
-            android:text="@string/participants"
+            android:layout_marginEnd="@dimen/common_spacing"
+            android:clickable="true"
             android:contentDescription="@string/participants"
+            android:text="@string/participants"
+            app:cornerRadius="@dimen/button_corner_radius"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/footer" />
-
-        <TextView
-            android:id="@+id/date_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/common_spacing"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:text="@string/event_date"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/like" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/speakers"
-            style="@style/Widget.AppTheme.IconButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/common_spacing"
-            android:checkable="true"
-            android:contentDescription="@string/like"
-            app:icon="@drawable/ic_person_pin_24"
-            android:text="@string/speakers"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/participants" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

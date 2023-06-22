@@ -41,7 +41,9 @@
     <string name="text_here">Text here</string>
     <string name="registration">Registration</string>
     <string name="add_post">Add post</string>
+    <string name="add_event">Add event</string>
     <string name="new_post">New post</string>
+    <string name="new_event">New event</string>
     <string name="not_registered">Not registered?</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="reg_successful">Registration successful. Welcome!</string>
@@ -53,4 +55,7 @@
     <string name="participants">Participants: %1$s</string>
     <string name="event_date">Event date:\n%1$s</string>
     <string name="speakers">Speakers: %1$s</string>
+    <string name="retry">Retry</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
 </resources>
