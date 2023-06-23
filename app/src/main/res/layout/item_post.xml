@@ -83,6 +83,17 @@
             app:layout_constraintTop_toBottomOf="@id/header"
             tools:text="Post content" />
 
+        <TextView
+            android:id="@+id/link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/common_spacing"
+            android:autoLink="web"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/content"
+            android:text="@string/link" />
+
         <ImageView
             android:id="@+id/image_attachment"
             android:layout_width="match_parent"
@@ -91,8 +102,9 @@
             android:paddingTop="@dimen/attachment_spacing"
             android:paddingBottom="@dimen/attachment_spacing"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@id/content"
-            app:layout_constraintTop_toBottomOf="@id/content"
+            android:contentDescription="@string/attachment"
+            app:layout_constraintStart_toStartOf="@id/link"
+            app:layout_constraintTop_toBottomOf="@id/link"
             tools:srcCompat="@tools:sample/avatars"
             tools:visibility="visible" />
 
@@ -129,6 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
+                android:contentDescription="@string/play_button"
                 android:src="@drawable/ic_play_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/audio_bar" />
@@ -139,6 +152,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:src="@drawable/ic_pause_24"
+                android:contentDescription="@string/pause_button"
                 app:layout_constraintStart_toEndOf="@id/play_button"
                 app:layout_constraintTop_toBottomOf="@id/audio_bar" />
 
@@ -148,6 +162,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:src="@drawable/ic_stop_24"
+                android:contentDescription="@string/stop_button"
                 app:layout_constraintStart_toEndOf="@id/pause_button"
                 app:layout_constraintTop_toBottomOf="@id/audio_bar" />
         </LinearLayout>
@@ -159,6 +174,7 @@
             android:layout_marginHorizontal="@dimen/common_spacing"
             android:clickable="true"
             android:src="@drawable/video_24"
+            android:contentDescription="@string/video"
             app:layout_constraintTop_toBottomOf="@id/audio_control" />
 
         <androidx.constraintlayout.widget.Barrier

@@ -116,6 +116,17 @@
             app:layout_constraintTop_toBottomOf="@id/barrier"
             tools:text="Post content" />
 
+        <TextView
+            android:id="@+id/link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/common_spacing"
+            android:autoLink="web"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/content"
+            android:text="@string/link" />
+
         <ImageView
             android:id="@+id/image_attachment"
             android:layout_width="match_parent"
@@ -124,8 +135,9 @@
             android:paddingTop="@dimen/attachment_spacing"
             android:paddingBottom="@dimen/attachment_spacing"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@id/content"
-            app:layout_constraintTop_toBottomOf="@id/content"
+            android:contentDescription="@string/attachment"
+            app:layout_constraintStart_toStartOf="@id/link"
+            app:layout_constraintTop_toBottomOf="@id/link"
             tools:srcCompat="@tools:sample/avatars"
             tools:visibility="visible" />
 
