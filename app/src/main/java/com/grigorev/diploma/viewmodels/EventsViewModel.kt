@@ -115,7 +115,7 @@ class EventsViewModel @Inject constructor(
         _media.value = noMedia
     }
 
-    fun changeContent(content: String, date: String) {
+    fun changeContent(content: String, link: String, date: String) {
         edited.value?.let {
             val text = content.trim()
 
@@ -124,6 +124,9 @@ class EventsViewModel @Inject constructor(
             }
             if (edited.value?.datetime != date) {
                 edited.value = edited.value?.copy(datetime = date)
+            }
+            if (edited.value?.link != link) {
+                edited.value = edited.value?.copy(link = link)
             }
 
         }

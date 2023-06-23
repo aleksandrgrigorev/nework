@@ -52,6 +52,7 @@ class EventsFragment : Fragment() {
                     putString("content", event.content)
                     putString("datetime", event.datetime)
                     putString("eventType", event.type.toString())
+                    putString("link", event.link ?: "")
                 }
                 findNavController()
                     .navigate(R.id.action_navigation_events_to_newEventFragment, bundle)

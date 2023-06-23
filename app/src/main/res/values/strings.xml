@@ -60,10 +60,11 @@
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="online">Online</string>
-    <string name="link">Link: %1$s</string>
+    <string name="get_link">Link: %1$s</string>
     <string name="play_button">Play button</string>
     <string name="pause_button">Pause button</string>
     <string name="stop_button">Stop button</string>
     <string name="video">Video</string>
     <string name="attachment">Attachment</string>
+    <string name="link">Link</string>
 </resources>

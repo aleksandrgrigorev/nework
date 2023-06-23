@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import java.io.InputStream
 import javax.inject.Inject
 
-private val empty = Post(
+val emptyPost = Post(
     id = 0,
     author = "",
     authorAvatar = "",
@@ -71,7 +71,7 @@ class PostsViewModel @Inject constructor(
     val dataState: LiveData<StateModel>
         get() = _dataState
 
-    private val edited = MutableLiveData(empty)
+    val edited = MutableLiveData(emptyPost)
 
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
@@ -131,7 +131,7 @@ class PostsViewModel @Inject constructor(
                 }
             }
         }
-        edited.value = empty
+        edited.value = emptyPost
         _media.value = noMedia
     }
 
@@ -139,12 +139,15 @@ class PostsViewModel @Inject constructor(
         edited.value = post
     }
 
-    fun changeContent(content: String) {
+    fun changeContent(content: String, link: String) {
         val text = content.trim()
-        if (edited.value?.content == text) {
-            return
+
+        if (edited.value?.content != text) {
+            edited.value = edited.value?.copy(content = text)
         }
-        edited.value = edited.value?.copy(content = text)
+        if (edited.value?.link != link) {
+            edited.value = edited.value?.copy(link = link)
+        }
     }
 
     fun changeMedia(uri: Uri?, inputStream: InputStream?, type: AttachmentType?) {

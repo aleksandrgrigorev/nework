@@ -21,7 +21,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/edit"
+                android:id="@+id/editContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -52,6 +52,23 @@
                     android:text="@string/remove"
                     app:cornerRadius="@dimen/button_corner_radius" />
             </FrameLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:hint="@string/link"
+                android:inputType="text"
+                android:paddingHorizontal="@dimen/common_spacing"
+                android:paddingTop="@dimen/common_spacing">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editLink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    tools:text="@tools:sample/lorem" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -90,12 +107,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/eventTypeCheckBox"
-                android:paddingHorizontal="@dimen/common_spacing"
                 style="@style/Widget.AppTheme.LikeCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:contentDescription="@string/online"
+                android:paddingHorizontal="@dimen/common_spacing"
                 android:text="@string/online"
                 app:cornerRadius="@dimen/button_corner_radius"
                 app:icon="@drawable/ic_check_box" />
@@ -109,6 +126,7 @@
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/common_spacing"
         android:layout_marginEnd="@dimen/common_spacing"
+        android:background="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@id/buttonPanel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -117,10 +135,10 @@
         android:id="@+id/buttonPanel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton

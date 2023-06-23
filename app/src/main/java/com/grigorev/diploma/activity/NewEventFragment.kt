@@ -44,19 +44,21 @@ class NewEventFragment : Fragment() {
 
         val content = arguments?.getString("content")
         val eventType = arguments?.getString("eventType")
+        val link = arguments?.getString("link")
 
         binding.apply {
 
-            edit.requestFocus()
+            editContent.requestFocus()
 
             if (eventViewModel.edited.value != emptyEvent) {
-                edit.setText(content)
+                editContent.setText(content)
                 editDate.setText(date)
                 editTime.setText(time)
                 when (eventType) {
                     "ONLINE" -> eventTypeCheckBox.isChecked = true
                     "OFFLINE" -> eventTypeCheckBox.isChecked = false
                 }
+                editLink.setText(link)
             }
 
             editDate.setOnClickListener {
@@ -135,12 +137,12 @@ class NewEventFragment : Fragment() {
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     return when (menuItem.itemId) {
                         R.id.save -> {
-                            if (edit.text.isEmpty()) {
+                            if (editContent.text.isEmpty()) {
                                 Toast.makeText(context, R.string.empty_event, Toast.LENGTH_SHORT)
                                     .show()
                             } else {
                                 eventViewModel.changeContent(
-                                    edit.text.toString(),
+                                    editContent.text.toString(), editLink.text.toString(),
                                     "${editDate.text} " + "${editTime.text}"
                                 )
                                 eventViewModel.changeEventType(eventTypeCheckBox.isChecked)

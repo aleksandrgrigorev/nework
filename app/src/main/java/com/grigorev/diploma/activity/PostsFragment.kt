@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.grigorev.diploma.R
-import com.grigorev.diploma.activity.NewPostFragment.Companion.textArg
 import com.grigorev.diploma.adapter.LoadingStateAdapter
 import com.grigorev.diploma.adapter.OnPostInteractionListener
 import com.grigorev.diploma.adapter.PostsAdapter
@@ -51,12 +50,12 @@ class PostsFragment : Fragment() {
 
             override fun onEdit(post: Post) {
                 postsViewModel.edit(post)
-                findNavController().navigate(
-                    R.id.action_navigation_posts_to_newPostFragment,
-                    Bundle().apply {
-                        textArg = post.content
-                    }
-                )
+                val bundle = Bundle().apply {
+                    putString("content", post.content)
+                    putString("link", post.link ?: "")
+                }
+                findNavController()
+                    .navigate(R.id.action_navigation_posts_to_newPostFragment, bundle)
             }
 
             override fun onRemove(post: Post) {

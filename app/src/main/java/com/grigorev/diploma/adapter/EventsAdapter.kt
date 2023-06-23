@@ -1,7 +1,6 @@
 package com.grigorev.diploma.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
@@ -83,7 +82,7 @@ class EventViewHolder(
 
             if (event.link != null) {
                 link.visibility = VISIBLE
-                link.text = itemView.context.getString(R.string.link, event.link)
+                link.text = itemView.context.getString(R.string.get_link, event.link)
             } else link.visibility = GONE
 
             like.isChecked = event.likedByMe
@@ -109,7 +108,7 @@ class EventViewHolder(
                                 true
                             }
 
-                            R.id.edit -> {
+                            R.id.editContent -> {
                                 onEventInteractionListener.onEditEvent(event)
                                 true
                             }

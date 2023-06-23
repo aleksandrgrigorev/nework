@@ -91,7 +91,7 @@ class PostViewHolder(
 
             if (post.link != null) {
             link.visibility = View.VISIBLE
-                link.text = itemView.context.getString(R.string.link, post.link)
+                link.text = itemView.context.getString(R.string.get_link, post.link)
             } else link.visibility = View.GONE
 
             post.attachment?.apply {
@@ -171,7 +171,7 @@ class PostViewHolder(
                                 true
                             }
 
-                            R.id.edit -> {
+                            R.id.editContent -> {
                                 onPostInteractionListener.onEdit(post)
                                 true
                             }
