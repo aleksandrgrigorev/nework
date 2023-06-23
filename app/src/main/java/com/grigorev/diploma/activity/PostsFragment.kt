@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -37,8 +37,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PostsFragment : Fragment() {
 
-    private val postsViewModel: PostsViewModel by viewModels()
-    private val authViewModel: AuthViewModel by viewModels()
+    private val postsViewModel: PostsViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

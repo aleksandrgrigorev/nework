@@ -28,10 +28,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class NewEventFragment : Fragment() {
 
-    companion object {
-        var Bundle.textArg: String? by StringArg
-    }
-
     private val eventViewModel: EventsViewModel by viewModels()
 
     var type: AttachmentType? = null
@@ -43,16 +39,16 @@ class NewEventFragment : Fragment() {
     ): View {
         val binding = FragmentNewEventBinding.inflate(inflater, container, false)
 
-        arguments?.textArg
-            ?.let(binding.edit::setText)
-
         binding.edit.requestFocus()
 
         val datetime = arguments?.getString("datetime")
         val date = datetime?.substring(0, 10)
-        val time = datetime?.substring(11)
+        val time = datetime?.substring(11, 16)
+
+        val content = arguments?.getString("content")
 
         if (eventViewModel.edited.value != emptyEvent) {
+            binding.edit.setText(content)
             binding.editDate.setText(date)
             binding.editTime.setText(time)
         }
@@ -158,7 +154,7 @@ class NewEventFragment : Fragment() {
         }, viewLifecycleOwner)
 
         eventViewModel.eventCreated.observe(viewLifecycleOwner) {
-            findNavController().navigate(R.id.action_newPostFragment_to_navigation_posts)
+            findNavController().navigateUp()
         }
 
         eventViewModel.error.observe(viewLifecycleOwner) {

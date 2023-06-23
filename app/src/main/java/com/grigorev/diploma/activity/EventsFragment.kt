@@ -34,8 +34,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class EventsFragment : Fragment() {
 
-    private val eventsViewModel by activityViewModels<EventsViewModel>()
-    private val authViewModel by activityViewModels<AuthViewModel>()
+    private val eventsViewModel: EventsViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +50,7 @@ class EventsFragment : Fragment() {
                 eventsViewModel.edit(event)
                 val bundle = Bundle().apply {
                     putString("content", event.content)
-                    putString("dateTime", event.datetime)
+                    putString("datetime", event.datetime)
                 }
                 findNavController()
                     .navigate(R.id.action_navigation_events_to_newEventFragment, bundle)

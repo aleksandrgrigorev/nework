@@ -53,7 +53,7 @@
     <string name="empty_post">Post can\'t be empty</string>
     <string name="participate">I\'m in!</string>
     <string name="participants">Participants: %1$s</string>
-    <string name="event_date">Event date:\n%1$s</string>
+    <string name="event_type_datetime">%1$s event date:\n%2$s</string>
     <string name="speakers">Speakers: %1$s</string>
     <string name="retry">Retry</string>
     <string name="date">Date</string>

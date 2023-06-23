@@ -54,7 +54,8 @@ class EventViewHolder(
             published.text = formatDateTime(event.published)
             content.text = event.content
             dateTime.text = itemView.context.getString(
-                R.string.event_date,
+                R.string.event_type_datetime,
+                event.type,
                 formatDateTime(event.datetime)
             )
             speakers.text =

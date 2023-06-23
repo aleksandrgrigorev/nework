@@ -8,7 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
@@ -30,8 +30,8 @@ class NewPostFragment : Fragment() {
         var Bundle.textArg: String? by StringArg
     }
 
-    private val viewModel: PostsViewModel by viewModels()
-    private val authViewModel: AuthViewModel by viewModels()
+    private val viewModel: PostsViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     var type: AttachmentType? = null
 

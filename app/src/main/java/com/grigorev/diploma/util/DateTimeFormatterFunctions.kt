@@ -24,20 +24,15 @@ fun pickDate(editText: EditText?, context: Context?) {
         calendar[Calendar.MONTH] = monthOfYear
         calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
 
-        editText?.setText(
-            SimpleDateFormat("yyyy-MM-dd", Locale.ROOT)
-                .format(calendar.time)
-        )
+        editText?.setText(SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).format(calendar.time))
     }
 
-    DatePickerDialog(
-        context!!,
+    DatePickerDialog(context!!,
         datePicker,
         calendar[Calendar.YEAR],
         calendar[Calendar.MONTH],
         calendar[Calendar.DAY_OF_MONTH]
-    )
-        .show()
+    ).show()
 }
 
 fun pickTime(editText: EditText, context: Context) {
@@ -45,10 +40,7 @@ fun pickTime(editText: EditText, context: Context) {
         calendar[Calendar.HOUR_OF_DAY] = hourOfDay
         calendar[Calendar.MINUTE] = minute
 
-        editText.setText(
-            SimpleDateFormat("HH:mm", Locale.ROOT)
-                .format(calendar.time)
-        )
+        editText.setText(SimpleDateFormat("HH:mm", Locale.ROOT).format(calendar.time))
     }
 
     TimePickerDialog(
@@ -57,6 +49,5 @@ fun pickTime(editText: EditText, context: Context) {
         calendar[Calendar.HOUR_OF_DAY],
         calendar[Calendar.MINUTE],
         true
-    )
-        .show()
+    ).show()
 }

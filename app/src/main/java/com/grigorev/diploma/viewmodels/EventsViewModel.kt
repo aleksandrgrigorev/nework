@@ -1,6 +1,7 @@
 package com.grigorev.diploma.viewmodels
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -104,6 +105,7 @@ class EventsViewModel @Inject constructor(
                     _dataState.value = StateModel()
                     _eventCreated.value = Unit
                 } catch (e: Exception) {
+                    Log.e("error", e.toString())
                     throw UnknownError()
                 }
             }
@@ -121,14 +123,6 @@ class EventsViewModel @Inject constructor(
             }
             if (edited.value?.datetime != date) {
                 edited.value = edited.value?.copy(datetime = date)
-            }
-        }
-    }
-
-    fun setSpeaker(id: Int) {
-        if (edited.value?.speakerIds?.contains(id) == false) {
-            edited.value = edited.value?.speakerIds?.plus(id)?.let {
-                edited.value?.copy(speakerIds = it)
             }
         }
     }

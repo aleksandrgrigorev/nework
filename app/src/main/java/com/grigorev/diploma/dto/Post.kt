@@ -29,7 +29,7 @@ enum class AttachmentType {
     IMAGE, AUDIO, VIDEO
 }
 
-data class Media(val id: String)
+data class Media(val url: String)
 
 data class MediaModel(
     val uri: Uri? = null,

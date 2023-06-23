@@ -58,7 +58,7 @@ class EventRepositoryImpl @Inject constructor(
         try {
             val media = uploadWithContent(upload)
             val eventWithAttachment =
-                event.copy(attachment = Attachment(media.id, AttachmentType.IMAGE))
+                event.copy(attachment = Attachment(media.url, AttachmentType.IMAGE))
             saveEvent(eventWithAttachment)
         } catch (e: IOException) {
             throw NetworkException

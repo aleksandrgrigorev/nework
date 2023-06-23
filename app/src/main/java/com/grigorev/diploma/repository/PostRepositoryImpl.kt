@@ -130,7 +130,7 @@ class PostRepositoryImpl @Inject constructor(
         try {
             val media = upload(upload)
             val postWithAttachment =
-                post.copy(attachment = Attachment(media.id, type))
+                post.copy(attachment = Attachment(media.url, type))
             savePost(postWithAttachment)
         } catch (e: IOException) {
             throw NetworkException

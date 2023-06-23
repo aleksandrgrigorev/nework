@@ -75,8 +75,9 @@ class PostViewHolder(
                 if (post.attachment != null && post.attachment.type == AttachmentType.VIDEO) View.VISIBLE else View.GONE
 
             Glide.with(authorAvatar)
-                .load(post.authorAvatar ?: R.drawable.ic_person_24)
-                .placeholder(R.drawable.ic_person_24)
+                .load(post.authorAvatar)
+                .error(R.drawable.ic_person_24)
+                .timeout(10_000)
                 .circleCrop()
                 .into(authorAvatar)
 
@@ -91,6 +92,8 @@ class PostViewHolder(
             post.attachment?.apply {
                 Glide.with(imageAttachment)
                     .load(this.url)
+                    .error(R.drawable.ic_error_24)
+                    .timeout(10_000)
                     .into(imageAttachment)
             }
 
