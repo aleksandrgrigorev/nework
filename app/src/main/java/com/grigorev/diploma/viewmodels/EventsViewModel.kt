@@ -95,6 +95,7 @@ class EventsViewModel @Inject constructor(
                     when (_media.value) {
                         noMedia ->
                             eventRepository.saveEvent(event)
+
                         else ->
                             _media.value?.inputStream?.let {
                                 MediaUpload(it)
@@ -123,6 +124,18 @@ class EventsViewModel @Inject constructor(
             }
             if (edited.value?.datetime != date) {
                 edited.value = edited.value?.copy(datetime = date)
+            }
+
+        }
+    }
+
+    fun changeEventType(isOnlineChecked: Boolean) {
+        edited.value?.let {
+            if (isOnlineChecked && edited.value?.type != EventType.ONLINE) {
+                edited.value = edited.value?.copy(type = EventType.ONLINE)
+            }
+            if (!isOnlineChecked && edited.value?.type != EventType.OFFLINE) {
+                edited.value = edited.value?.copy(type = EventType.OFFLINE)
             }
         }
     }

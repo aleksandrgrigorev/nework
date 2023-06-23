@@ -67,6 +67,7 @@
 
     <LinearLayout
         android:id="@+id/buttonPanel"
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

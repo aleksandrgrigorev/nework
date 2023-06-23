@@ -51,6 +51,7 @@ class EventsFragment : Fragment() {
                 val bundle = Bundle().apply {
                     putString("content", event.content)
                     putString("datetime", event.datetime)
+                    putString("eventType", event.type.toString())
                 }
                 findNavController()
                     .navigate(R.id.action_navigation_events_to_newEventFragment, bundle)
@@ -176,6 +177,6 @@ class EventsFragment : Fragment() {
 
     fun unauthorizedAccessAttempt() {
         Toast.makeText(context, R.string.sign_in_to_continue, Toast.LENGTH_LONG).show()
-        findNavController().navigate(R.id.action_navigation_posts_to_signInFragment)
+        findNavController().navigate(R.id.action_navigation_events_to_signInFragment)
     }
 }

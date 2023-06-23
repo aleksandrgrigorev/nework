@@ -42,119 +42,120 @@ class NewPostFragment : Fragment() {
     ): View {
         val binding = FragmentNewPostBinding.inflate(inflater, container, false)
 
-        arguments?.textArg
-            ?.let(binding.edit::setText)
+        binding.apply {
 
-        binding.edit.requestFocus()
+            edit.requestFocus()
 
-        val photoContract =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                when (it.resultCode) {
-                    ImagePicker.RESULT_ERROR -> Snackbar.make(
-                        binding.root,
-                        ImagePicker.getError(it.data),
-                        Snackbar.LENGTH_LONG
-                    ).show()
+            arguments?.textArg?.let(edit::setText)
 
-                    Activity.RESULT_OK -> {
-                        it.data?.data.let { uri ->
-                            val stream = uri?.let {
-                                context?.contentResolver?.openInputStream(it)
+            val photoContract =
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                    when (it.resultCode) {
+                        ImagePicker.RESULT_ERROR -> Snackbar.make(
+                            root, ImagePicker.getError(it.data), Snackbar.LENGTH_LONG
+                        ).show()
+
+                        Activity.RESULT_OK -> {
+                            it.data?.data.let { uri ->
+                                val stream = uri?.let {
+                                    context?.contentResolver?.openInputStream(it)
+                                }
+                                viewModel.changeMedia(uri, stream, type)
                             }
-                            viewModel.changeMedia(uri, stream, type)
                         }
                     }
                 }
-            }
 
-        val mediaContract =
-            registerForActivityResult(ActivityResultContracts.GetContent()) {
-                it?.let {
-                    val stream = context?.contentResolver?.openInputStream(it)
-                    viewModel.changeMedia(it, stream, type)
+            val mediaContract =
+                registerForActivityResult(ActivityResultContracts.GetContent()) {
+                    it?.let {
+                        val stream = context?.contentResolver?.openInputStream(it)
+                        viewModel.changeMedia(it, stream, type)
+                    }
                 }
+
+            viewModel.media.observe(viewLifecycleOwner) {
+                media.setImageURI(it.uri)
+                mediaContainer.isVisible = it.uri != null
             }
 
-        viewModel.media.observe(viewLifecycleOwner) {
-            binding.media.setImageURI(it.uri)
-            binding.mediaContainer.isVisible = it.uri != null
-        }
+            takePhoto.setOnClickListener {
+                ImagePicker.with(this@NewPostFragment)
+                    .cameraOnly()
+                    .crop()
+                    .compress(2048)
+                    .createIntent(photoContract::launch)
+                type = AttachmentType.IMAGE
+            }
 
-        binding.takePhoto.setOnClickListener {
-            ImagePicker.with(this)
-                .cameraOnly()
-                .crop()
-                .compress(2048)
-                .createIntent(photoContract::launch)
-            type = AttachmentType.IMAGE
-        }
-
-        binding.pickPhoto.setOnClickListener {
-            ImagePicker.Builder(this)
-                .galleryOnly()
-                .galleryMimeTypes(
-                    arrayOf(
-                        "image/png",
-                        "image/jpeg",
-                        "image/jpg"
+            pickPhoto.setOnClickListener {
+                ImagePicker.Builder(this@NewPostFragment)
+                    .galleryOnly()
+                    .galleryMimeTypes(
+                        arrayOf(
+                            "image/png",
+                            "image/jpeg",
+                            "image/jpg"
+                        )
                     )
-                )
-                .maxResultSize(2048, 2048)
-                .createIntent(photoContract::launch)
-            type = AttachmentType.IMAGE
-        }
-
-        binding.pickAudio.setOnClickListener {
-            mediaContract.launch("audio/*")
-            type = AttachmentType.AUDIO
-        }
-
-        binding.pickVideo.setOnClickListener {
-            mediaContract.launch("video/*")
-            type = AttachmentType.VIDEO
-        }
-
-        binding.removeMedia.setOnClickListener {
-            viewModel.removeMedia()
-        }
-
-        viewModel.media.observe(viewLifecycleOwner) {
-            if (it?.uri == null) {
-                binding.mediaContainer.visibility = View.GONE
-                return@observe
-            }
-            binding.mediaContainer.visibility = View.VISIBLE
-            binding.media.setImageURI(it.uri)
-        }
-
-        activity?.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_new_post, menu)
+                    .maxResultSize(2048, 2048)
+                    .createIntent(photoContract::launch)
+                type = AttachmentType.IMAGE
             }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.save -> {
-                        if (binding.edit.text.isEmpty()) {
-                            Toast.makeText(context, R.string.empty_post, Toast.LENGTH_SHORT).show()
-                        } else {
-                            viewModel.changeContent(binding.edit.text.toString())
-                            viewModel.save()
-                            AndroidUtils.hideKeyboard(requireView())
-                        }
-                        true
-                    }
+            pickAudio.setOnClickListener {
+                mediaContract.launch("audio/*")
+                type = AttachmentType.AUDIO
+            }
 
-                    R.id.logout -> {
-                        SignOutFragment().show(childFragmentManager, "logoutDialog")
-                        if (!authViewModel.authorized) findNavController().navigateUp()
-                        true
-                    }
+            pickVideo.setOnClickListener {
+                mediaContract.launch("video/*")
+                type = AttachmentType.VIDEO
+            }
 
-                    else -> false
+            removeMedia.setOnClickListener {
+                viewModel.removeMedia()
+            }
+
+            viewModel.media.observe(viewLifecycleOwner) {
+                if (it?.uri == null) {
+                    mediaContainer.visibility = View.GONE
+                    return@observe
                 }
+                mediaContainer.visibility = View.VISIBLE
+                media.setImageURI(it.uri)
             }
-        }, viewLifecycleOwner)
+
+            activity?.addMenuProvider(object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.menu_new_post, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.save -> {
+                            if (edit.text.isEmpty()) {
+                                Toast.makeText(context, R.string.empty_post, Toast.LENGTH_SHORT)
+                                    .show()
+                            } else {
+                                viewModel.changeContent(edit.text.toString())
+                                viewModel.save()
+                                AndroidUtils.hideKeyboard(requireView())
+                            }
+                            true
+                        }
+
+                        R.id.logout -> {
+                            SignOutFragment().show(childFragmentManager, "logoutDialog")
+                            if (!authViewModel.authorized) findNavController().navigateUp()
+                            true
+                        }
+
+                        else -> false
+                    }
+                }
+            }, viewLifecycleOwner)
+        }
 
         viewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigate(R.id.action_newPostFragment_to_navigation_posts)
