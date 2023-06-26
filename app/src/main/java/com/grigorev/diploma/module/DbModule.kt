@@ -1,7 +1,8 @@
-package com.grigorev.diploma.db
+package com.grigorev.diploma.module
 
 import android.content.Context
 import androidx.room.Room
+import com.grigorev.diploma.db.AppDb
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

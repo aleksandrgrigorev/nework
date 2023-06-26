@@ -40,8 +40,8 @@
     <string name="cancel">Cancel</string>
     <string name="text_here">Text here</string>
     <string name="registration">Registration</string>
-    <string name="add_post">Add post</string>
-    <string name="add_event">Add event</string>
+    <string name="add_post">Add a post</string>
+    <string name="add_event">Add an event</string>
     <string name="new_post">New post</string>
     <string name="new_event">New event</string>
     <string name="not_registered">Not registered?</string>
@@ -67,4 +67,13 @@
     <string name="video">Video</string>
     <string name="attachment">Attachment</string>
     <string name="link">Link</string>
+    <string name="add_job">Add a job</string>
+    <string name="delete_job">delete a job</string>
+    <string name="job_start_end">From %1$s \nto %2$s</string>
+    <string name="job_start">Since %1$s</string>
+    <string name="user_profile">User profile</string>
+    <string name="from">From</string>
+    <string name="until">Until</string>
+    <string name="job_title">Job title</string>
+    <string name="job_position">Job position</string>
 </resources>

@@ -121,7 +121,8 @@ class PostsViewModel @Inject constructor(
                     when (_media.value) {
                         noMedia -> repository.savePost(post)
                         else -> _media.value?.inputStream?.let {
-                            MediaUpload(it) }?.let {
+                            MediaUpload(it)
+                        }?.let {
                             repository.saveWithAttachment(post, it, _media.value?.type!!)
                         }
                     }

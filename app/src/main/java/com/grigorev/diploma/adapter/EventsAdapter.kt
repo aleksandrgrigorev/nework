@@ -77,6 +77,8 @@ class EventViewHolder(
             event.attachment?.apply {
                 Glide.with(imageAttachment)
                     .load(this.url)
+                    .error(R.drawable.ic_error_24)
+                    .timeout(10_000)
                     .into(imageAttachment)
             }
 

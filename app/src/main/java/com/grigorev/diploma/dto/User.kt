@@ -4,9 +4,9 @@ import android.net.Uri
 import java.io.File
 
 data class User(
-    val id: Int,
-    val login: String,
-    val name: String,
+    val id: Int = 0,
+    val login: String = "",
+    val name: String = "",
     val avatar: String? = null
 )
 

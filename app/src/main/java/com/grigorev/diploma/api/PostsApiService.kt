@@ -45,4 +45,24 @@ interface PostsApiService {
     @Multipart
     @POST("/api/media")
     suspend fun upload(@Part media: MultipartBody.Part): Response<Media>
+
+    @GET("/api/{authorId}/wall/latest")
+    suspend fun getLatestWallPosts(
+        @Path("authorId") authorId: Int,
+        @Query("count") count: Int
+    ): Response<List<Post>>
+
+    @GET("/api/{authorId}/wall/{id}/before")
+    suspend fun getWallPostsBefore(
+        @Path("id") id: Int,
+        @Path("authorId") authorId: Int,
+        @Query("count") count: Int
+    ): Response<List<Post>>
+
+    @GET("/api/{authorId}/wall/{id}/after")
+    suspend fun getWallPostsAfter(
+        @Path("id") id: Int,
+        @Path("authorId") authorId: Int,
+        @Query("count") count: Int
+    ): Response<List<Post>>
 }

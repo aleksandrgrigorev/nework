@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import com.grigorev.diploma.entity.PostEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PostDao {
@@ -31,4 +30,7 @@ interface PostDao {
 
     @Query("UPDATE PostEntity SET likedByMe = 0 WHERE id = :id AND likedByMe = 1")
     suspend fun unlikeById(id: Int)
+
+    @Query("SELECT * FROM PostEntity WHERE id = :id ")
+    suspend fun getPostById(id: Int) : PostEntity
 }

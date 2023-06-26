@@ -27,6 +27,7 @@ interface OnPostInteractionListener {
 
     fun onWatchVideo(post: Post)
 
+    fun onOpenUserProfile(post: Post)
 }
 
 class PostsAdapter(
@@ -88,6 +89,9 @@ class PostViewHolder(
             )
             published.text = formatDateTime(post.published)
             content.text = post.content
+
+            authorAvatar.setOnClickListener { onPostInteractionListener.onOpenUserProfile(post) }
+            author.setOnClickListener { onPostInteractionListener.onOpenUserProfile(post) }
 
             if (post.link != null) {
             link.visibility = View.VISIBLE

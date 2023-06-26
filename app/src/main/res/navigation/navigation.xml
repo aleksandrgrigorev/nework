@@ -11,14 +11,17 @@
         android:label="@string/posts"
         tools:layout="@layout/fragment_posts" >
         <action
-            android:id="@+id/action_navigation_posts_to_newPostFragment"
+            android:id="@+id/action_posts_to_newPostFragment"
             app:destination="@id/newPostFragment" />
         <action
-            android:id="@+id/action_navigation_posts_to_signUpFragment"
+            android:id="@+id/action_posts_to_signUpFragment"
             app:destination="@id/signUpFragment" />
         <action
-            android:id="@+id/action_navigation_posts_to_signInFragment"
+            android:id="@+id/action_posts_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_posts_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
 
     <fragment
@@ -27,13 +30,13 @@
         android:label="@string/events"
         tools:layout="@layout/fragment_events" >
         <action
-            android:id="@+id/action_navigation_events_to_newEventFragment"
+            android:id="@+id/action_events_to_newEventFragment"
             app:destination="@id/newEventFragment" />
         <action
-            android:id="@+id/action_navigation_events_to_signInFragment"
+            android:id="@+id/action_events_to_signInFragment"
             app:destination="@id/signInFragment" />
         <action
-            android:id="@+id/action_navigation_events_to_signUpFragment"
+            android:id="@+id/action_events_to_signUpFragment"
             app:destination="@id/signUpFragment" />
     </fragment>
     <fragment
@@ -73,5 +76,24 @@
         android:id="@+id/newEventFragment"
         android:name="com.grigorev.diploma.activity.NewEventFragment"
         android:label="@string/add_event" />
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.grigorev.diploma.activity.UserProfileFragment"
+        android:label="@string/user_profile" >
+        <action
+            android:id="@+id/action_userProfileFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_newJobFragment"
+            app:destination="@id/newJobFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newJobFragment"
+        android:name="com.grigorev.diploma.activity.NewJobFragment"
+        android:label="@string/add_job" >
+        <action
+            android:id="@+id/action_newJobFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
 
 </navigation>

@@ -55,7 +55,7 @@ class EventsFragment : Fragment() {
                     putString("link", event.link ?: "")
                 }
                 findNavController()
-                    .navigate(R.id.action_navigation_events_to_newEventFragment, bundle)
+                    .navigate(R.id.action_events_to_newEventFragment, bundle)
             }
 
             override fun onRemoveEvent(event: Event) {
@@ -120,7 +120,7 @@ class EventsFragment : Fragment() {
         authViewModel.state.observe(viewLifecycleOwner) {
             binding.fab.setOnClickListener {
                 when (authViewModel.authorized) {
-                    true -> findNavController().navigate(R.id.action_navigation_events_to_newEventFragment)
+                    true -> findNavController().navigate(R.id.action_events_to_newEventFragment)
                     false -> unauthorizedAccessAttempt()
                 }
             }
@@ -154,12 +154,12 @@ class EventsFragment : Fragment() {
                     }
 
                     R.id.signIn -> {
-                        findNavController().navigate(R.id.action_navigation_events_to_signInFragment)
+                        findNavController().navigate(R.id.action_events_to_signInFragment)
                         true
                     }
 
                     R.id.signUp -> {
-                        findNavController().navigate(R.id.action_navigation_events_to_signUpFragment)
+                        findNavController().navigate(R.id.action_events_to_signUpFragment)
                         true
                     }
 
@@ -178,6 +178,6 @@ class EventsFragment : Fragment() {
 
     fun unauthorizedAccessAttempt() {
         Toast.makeText(context, R.string.sign_in_to_continue, Toast.LENGTH_LONG).show()
-        findNavController().navigate(R.id.action_navigation_events_to_signInFragment)
+        findNavController().navigate(R.id.action_events_to_signInFragment)
     }
 }
