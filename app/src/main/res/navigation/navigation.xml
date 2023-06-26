@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_events_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_events_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
@@ -75,14 +78,12 @@
     <fragment
         android:id="@+id/newEventFragment"
         android:name="com.grigorev.diploma.activity.NewEventFragment"
-        android:label="@string/add_event" />
+        android:label="@string/add_event" >
+    </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="com.grigorev.diploma.activity.UserProfileFragment"
         android:label="@string/user_profile" >
-        <action
-            android:id="@+id/action_userProfileFragment_to_newPostFragment"
-            app:destination="@id/newPostFragment" />
         <action
             android:id="@+id/action_userProfileFragment_to_newJobFragment"
             app:destination="@id/newJobFragment" />

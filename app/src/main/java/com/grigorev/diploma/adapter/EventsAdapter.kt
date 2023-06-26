@@ -21,6 +21,8 @@ interface OnEventInteractionListener {
     fun onRemoveEvent(event: Event)
     fun onLikeEvent(event: Event)
     fun onParticipate(event: Event)
+
+    fun onOpenUserProfile(event: Event)
 }
 
 class EventAdapter(

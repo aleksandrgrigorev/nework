@@ -83,6 +83,21 @@ class EventsFragment : Fragment() {
                     false -> unauthorizedAccessAttempt()
                 }
             }
+
+            override fun onOpenUserProfile(event: Event) {
+                if (authViewModel.authorized) {
+                    val bundle = Bundle().apply {
+                        putString("authorAvatar", event.authorAvatar)
+                        putString("author", event.author)
+                        putInt("authorId", event.authorId)
+                        putBoolean("ownedByMe", event.ownedByMe)
+                    }
+                    findNavController()
+                        .navigate(R.id.action_events_to_userProfileFragment, bundle)
+                } else {
+                    unauthorizedAccessAttempt()
+                }
+            }
         })
 
         val itemAnimator: DefaultItemAnimator = object : DefaultItemAnimator() {
