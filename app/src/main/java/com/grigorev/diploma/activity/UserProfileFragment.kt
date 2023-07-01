@@ -3,7 +3,6 @@ package com.grigorev.diploma.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -85,6 +84,14 @@ class UserProfileFragment : Fragment() {
 
         }, isProfileMine)
 
+        binding.userProfileToolbar.jobsList.adapter = jobAdapter
+
+        if (isProfileMine) {
+            binding.userProfileToolbar.addJob.visibility = View.VISIBLE
+        } else {
+            binding.userProfileToolbar.addJob.visibility = View.GONE
+        }
+
         val postsAdapter = PostsAdapter(object : OnPostInteractionListener {
 
             override fun onEdit(post: Post) {
@@ -128,6 +135,8 @@ class UserProfileFragment : Fragment() {
             }
         })
 
+        binding.postsList.adapter = postsAdapter
+
         val itemAnimator: DefaultItemAnimator = object : DefaultItemAnimator() {
             override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {
                 return true
@@ -146,7 +155,6 @@ class UserProfileFragment : Fragment() {
         profileViewModel.getAllJobs().observe(viewLifecycleOwner) {
             val oldCount = jobAdapter.itemCount
             jobAdapter.submitList(it.toList()) {
-                Log.e("GOVNO", jobAdapter.currentList.toString())
                 if (it.size > oldCount) {
                     binding.userProfileToolbar.jobsList.smoothScrollToPosition((0))
                 }

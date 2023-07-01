@@ -115,9 +115,10 @@ class PostsFragment : Fragment() {
             footer = LoadingStateAdapter { adapter.retry() },
         )
 
+        binding.postsList.adapter = adapter
+
         lifecycleScope.launch {
             postsViewModel.data.collect {
-                binding.postsList.adapter = adapter
                 adapter.submitData(it)
             }
         }

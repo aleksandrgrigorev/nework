@@ -2,11 +2,15 @@ package com.grigorev.diploma.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import androidx.paging.*
-import com.grigorev.diploma.dao.WallPostDao
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.grigorev.diploma.api.JobsApiService
 import com.grigorev.diploma.api.PostsApiService
 import com.grigorev.diploma.dao.JobDao
+import com.grigorev.diploma.dao.WallPostDao
 import com.grigorev.diploma.dao.WallRemoteKeyDao
 import com.grigorev.diploma.db.AppDb
 import com.grigorev.diploma.dto.Job
@@ -48,9 +52,7 @@ class ProfileRepository @Inject constructor(
     }
 
     fun getAllJobs(): LiveData<List<Job>> = jobDao.getAllJobs().map { jobList ->
-        jobList.map {
-            it.toDto()
-        }
+        jobList.map { it.toDto() }
     }
 
     suspend fun loadJobs(authorId: Int) {
@@ -63,7 +65,7 @@ class ProfileRepository @Inject constructor(
         } catch (e: IOException) {
             throw NetworkException
         } catch (e: SQLException) {
-            throw  DbException
+            throw DbException
         } catch (e: Exception) {
             throw UnknownException
         }
@@ -78,7 +80,7 @@ class ProfileRepository @Inject constructor(
         } catch (e: IOException) {
             throw NetworkException
         } catch (e: SQLException) {
-            throw  DbException
+            throw DbException
         } catch (e: Exception) {
             throw UnknownException
         }
@@ -97,7 +99,7 @@ class ProfileRepository @Inject constructor(
         } catch (e: IOException) {
             throw NetworkException
         } catch (e: SQLException) {
-            throw  DbException
+            throw DbException
         } catch (e: Exception) {
             throw UnknownException
         }

@@ -117,9 +117,10 @@ class EventsFragment : Fragment() {
             eventsViewModel.data.collectLatest(adapter::submitData)
         }
 
+        binding.eventsList.adapter = adapter
+
         lifecycleScope.launch {
             eventsViewModel.data.collect {
-                binding.eventsList.adapter = adapter
                 adapter.submitData(it)
             }
         }
