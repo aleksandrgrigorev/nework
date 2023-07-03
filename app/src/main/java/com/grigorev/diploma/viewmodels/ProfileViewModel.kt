@@ -12,7 +12,7 @@ import com.grigorev.diploma.auth.AppAuth
 import com.grigorev.diploma.dto.Job
 import com.grigorev.diploma.dto.Post
 import com.grigorev.diploma.model.StateModel
-import com.grigorev.diploma.repository.ProfileRepository
+import com.grigorev.diploma.repository.ProfileRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -33,7 +33,7 @@ val emptyJob = Job(
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val appAuth: AppAuth,
-    private val repository: ProfileRepository
+    private val repository: ProfileRepositoryImpl
 ) : ViewModel() {
 
     val editedJob = MutableLiveData(emptyJob)
@@ -57,15 +57,13 @@ class ProfileViewModel @Inject constructor(
         }
         .cachedIn(viewModelScope)
 
-    fun loadJobsFromServer(authorId: Int) {
-        viewModelScope.launch {
-            try {
-                _dataState.value = StateModel(loading = true)
-                repository.loadJobs(authorId)
-                _dataState.value = StateModel()
-            } catch (e: Exception) {
-                _dataState.value = StateModel(error = true)
-            }
+    fun loadJobs(authorId: Int) = viewModelScope.launch {
+        try {
+            _dataState.value = StateModel(loading = true)
+            repository.loadJobs(authorId)
+            _dataState.value = StateModel()
+        } catch (e: Exception) {
+            _dataState.value = StateModel(error = true)
         }
     }
 

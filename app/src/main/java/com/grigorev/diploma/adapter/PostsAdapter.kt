@@ -94,7 +94,7 @@ class PostViewHolder(
             author.setOnClickListener { onPostInteractionListener.onOpenUserProfile(post) }
 
             if (post.link != null) {
-            link.visibility = View.VISIBLE
+                link.visibility = View.VISIBLE
                 link.text = itemView.context.getString(R.string.get_link, post.link)
             } else link.visibility = View.GONE
 

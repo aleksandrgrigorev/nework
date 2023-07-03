@@ -16,13 +16,12 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.appbar.AppBarLayout
 import com.grigorev.diploma.R
 import com.grigorev.diploma.adapter.JobAdapter
 import com.grigorev.diploma.adapter.OnJobInteractionListener
 import com.grigorev.diploma.adapter.OnPostInteractionListener
 import com.grigorev.diploma.adapter.PostsAdapter
-import com.grigorev.diploma.databinding.FragmentUserBinding
+import com.grigorev.diploma.databinding.FragmentProfileBinding
 import com.grigorev.diploma.dto.Job
 import com.grigorev.diploma.dto.Post
 import com.grigorev.diploma.viewmodels.PostsViewModel
@@ -34,7 +33,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class UserProfileFragment : Fragment() {
+class ProfileFragment : Fragment() {
 
     private val postsViewModel: PostsViewModel by activityViewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
@@ -43,7 +42,7 @@ class UserProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentUserBinding.inflate(inflater, container, false)
+        val binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         val authorAvatar = arguments?.getString("authorAvatar")
         val author = arguments?.getString("author")!!
@@ -59,9 +58,11 @@ class UserProfileFragment : Fragment() {
 
         binding.userProfileToolbar.username.text = author
 
-        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+        binding.appBar.addOnOffsetChangedListener { _, verticalOffset ->
             binding.swipeToRefresh.isEnabled = verticalOffset == 0
-        })
+        }
+
+        profileViewModel.loadJobs(authorId)
 
         val jobAdapter = JobAdapter(object : OnJobInteractionListener {
 
@@ -84,12 +85,33 @@ class UserProfileFragment : Fragment() {
 
         }, isProfileMine)
 
-        binding.userProfileToolbar.jobsList.adapter = jobAdapter
+        val itemAnimator: DefaultItemAnimator = object : DefaultItemAnimator() {
+            override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {
+                return true
+            }
+        }
 
         if (isProfileMine) {
             binding.userProfileToolbar.addJob.visibility = View.VISIBLE
+            binding.userProfileToolbar.addJob.setOnClickListener {
+                findNavController().navigate(R.id.action_userProfileFragment_to_newJobFragment)
+            }
         } else {
             binding.userProfileToolbar.addJob.visibility = View.GONE
+        }
+
+        binding.userProfileToolbar.jobsList.itemAnimator = itemAnimator
+
+        binding.userProfileToolbar.jobsList.adapter = jobAdapter
+
+        profileViewModel.getAllJobs().observe(viewLifecycleOwner) {
+            val oldCount = jobAdapter.itemCount
+            jobAdapter.submitList(it.toList()) {
+                if (it.size > oldCount) {
+                    binding.userProfileToolbar.jobsList.smoothScrollToPosition((0))
+                }
+            }
+            binding.userProfileToolbar.jobsList.isVisible = it.isNotEmpty()
         }
 
         val postsAdapter = PostsAdapter(object : OnPostInteractionListener {
@@ -135,32 +157,9 @@ class UserProfileFragment : Fragment() {
             }
         })
 
-        binding.postsList.adapter = postsAdapter
-
-        val itemAnimator: DefaultItemAnimator = object : DefaultItemAnimator() {
-            override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {
-                return true
-            }
-        }
-
         binding.postsList.itemAnimator = itemAnimator
-        binding.userProfileToolbar.jobsList.itemAnimator = itemAnimator
 
-        binding.userProfileToolbar.addJob.setOnClickListener {
-            findNavController().navigate(R.id.action_userProfileFragment_to_newJobFragment)
-        }
-
-        profileViewModel.loadJobsFromServer(authorId)
-
-        profileViewModel.getAllJobs().observe(viewLifecycleOwner) {
-            val oldCount = jobAdapter.itemCount
-            jobAdapter.submitList(it.toList()) {
-                if (it.size > oldCount) {
-                    binding.userProfileToolbar.jobsList.smoothScrollToPosition((0))
-                }
-            }
-            binding.userProfileToolbar.jobsList.isVisible = it.isNotEmpty()
-        }
+        binding.postsList.adapter = postsAdapter
 
         lifecycleScope.launch {
             profileViewModel.getWallPosts(authorId).collectLatest {

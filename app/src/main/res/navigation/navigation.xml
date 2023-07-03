@@ -82,7 +82,7 @@
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.grigorev.diploma.activity.UserProfileFragment"
+        android:name="com.grigorev.diploma.activity.ProfileFragment"
         android:label="@string/user_profile" >
         <action
             android:id="@+id/action_userProfileFragment_to_newJobFragment"
