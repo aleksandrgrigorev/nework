@@ -157,8 +157,6 @@ class ProfileFragment : Fragment() {
             }
         })
 
-        binding.postsList.itemAnimator = itemAnimator
-
         binding.postsList.adapter = postsAdapter
 
         lifecycleScope.launch {
