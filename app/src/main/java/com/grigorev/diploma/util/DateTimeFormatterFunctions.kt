@@ -12,7 +12,8 @@ import java.util.Locale
 
 private val calendar = Calendar.getInstance()
 private val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
-private val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+private val profileDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+private val jobDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
 fun formatDateTime(dateTime: String): String? {
     return LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME)
@@ -21,7 +22,12 @@ fun formatDateTime(dateTime: String): String? {
 
 fun formatDate(date: String): String? {
     return LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
-        ?.let { dateFormatter.format(it) }
+        ?.let { profileDateFormatter.format(it) }
+}
+
+fun formatJobDate(date: String?): String? {
+    return LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
+        ?.let { jobDateFormatter.format(it) }
 }
 
 fun pickDate(editText: EditText?, context: Context?) {

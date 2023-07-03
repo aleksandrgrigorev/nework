@@ -57,6 +57,18 @@ class ProfileViewModel @Inject constructor(
         }
         .cachedIn(viewModelScope)
 
+    fun getLatestWallPosts(userId: Int){
+        viewModelScope.launch {
+            try {
+                _dataState.value = StateModel(loading = true)
+                repository.getLatestWallPosts(userId)
+                _dataState.value = StateModel()
+            } catch (e: Exception) {
+                _dataState.value = StateModel(error = true)
+            }
+        }
+    }
+
     fun loadJobs(authorId: Int) = viewModelScope.launch {
         try {
             _dataState.value = StateModel(loading = true)

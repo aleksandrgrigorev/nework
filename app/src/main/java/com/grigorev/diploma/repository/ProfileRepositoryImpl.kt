@@ -17,6 +17,7 @@ import com.grigorev.diploma.dto.Job
 import com.grigorev.diploma.dto.Post
 import com.grigorev.diploma.entity.JobEntity
 import com.grigorev.diploma.entity.fromDto
+import com.grigorev.diploma.entity.toWallPostEntity
 import com.grigorev.diploma.error.ApiException
 import com.grigorev.diploma.error.DbException
 import com.grigorev.diploma.error.NetworkException
@@ -49,6 +50,22 @@ class ProfileRepositoryImpl @Inject constructor(
         pagingSourceFactory = { wallPostDao.getWallPagingSource() }
     ).flow.map { postList ->
         postList.map { it.toDto() }
+    }
+
+    suspend fun getLatestWallPosts(authorId: Int) {
+        try {
+            wallPostDao.removeAllPosts()
+            val response = postsApiService.getLatestWallPosts(authorId, 10)
+            if (!response.isSuccessful) throw ApiException(response.code(), response.message())
+            val body = response.body() ?: throw ApiException(response.code(), response.message())
+            wallPostDao.insertPosts(body.toWallPostEntity())
+        } catch (e: IOException) {
+            throw NetworkException
+        } catch (e: SQLException) {
+            throw  DbException
+        } catch (e: Exception) {
+            throw UnknownException
+        }
     }
 
     override fun getAllJobs(): LiveData<List<Job>> = jobDao.getAllJobs().map { jobList ->

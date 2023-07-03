@@ -46,7 +46,7 @@ class ProfileFragment : Fragment() {
         val authorAvatar = arguments?.getString("authorAvatar")
         val author = arguments?.getString("author")!!
         val authorId = arguments?.getInt("authorId")!!
-        val isProfileMine = arguments?.getBoolean("ownedByMe")!!
+        val ownedByMe = arguments?.getBoolean("ownedByMe")!!
 
         Glide.with(binding.userProfileToolbar.userAvatar)
             .load(authorAvatar)
@@ -62,6 +62,7 @@ class ProfileFragment : Fragment() {
         }
 
         profileViewModel.loadJobs(authorId)
+        profileViewModel.getLatestWallPosts(authorId)
 
         val jobAdapter = JobAdapter(object : OnJobInteractionListener {
 
@@ -73,6 +74,12 @@ class ProfileFragment : Fragment() {
                     putString("start", job.start)
                     putString("finish", job.finish)
                     putString("link", job.link)
+                    putInt("id", job.id)
+
+                    putString("authorAvatar", authorAvatar)
+                    putString("author", author)
+                    putInt("authorId", authorId)
+                    putBoolean("ownedByMe", ownedByMe)
                 }
                 findNavController()
                     .navigate(R.id.action_userProfileFragment_to_newJobFragment, bundle)
@@ -82,7 +89,7 @@ class ProfileFragment : Fragment() {
                 profileViewModel.deleteJobById(job.id)
             }
 
-        }, isProfileMine)
+        }, ownedByMe)
 
         val itemAnimator: DefaultItemAnimator = object : DefaultItemAnimator() {
             override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {
@@ -90,7 +97,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        if (isProfileMine) {
+        if (ownedByMe) {
             binding.userProfileToolbar.addJob.visibility = View.VISIBLE
             binding.userProfileToolbar.addJob.setOnClickListener {
                 findNavController().navigate(R.id.action_userProfileFragment_to_newJobFragment)
