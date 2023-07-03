@@ -14,5 +14,6 @@
     <dimen name="item_corner_radius">16dp</dimen>
     <dimen name="title">32sp</dimen>
     <dimen name="question">16sp</dimen>
+    <dimen name="job_name">16sp</dimen>
     <dimen name="username_size">24sp</dimen>
 </resources>

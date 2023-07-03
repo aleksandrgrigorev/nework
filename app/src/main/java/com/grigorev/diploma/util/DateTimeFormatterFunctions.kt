@@ -11,11 +11,17 @@ import java.util.Calendar
 import java.util.Locale
 
 private val calendar = Calendar.getInstance()
-private val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")
+private val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+private val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
 fun formatDateTime(dateTime: String): String? {
     return LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME)
         ?.let { formatter.format(it) }
+}
+
+fun formatDate(date: String): String? {
+    return LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
+        ?.let { dateFormatter.format(it) }
 }
 
 fun pickDate(editText: EditText?, context: Context?) {

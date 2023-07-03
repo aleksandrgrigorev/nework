@@ -18,7 +18,6 @@
             style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/common_spacing"
             android:background="@color/colorWhite"
             android:contentDescription="@string/post_menu"
             app:cornerRadius="@dimen/button_corner_radius"
@@ -26,54 +25,81 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start_guideline"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/common_spacing" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end_guideline"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/common_spacing" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/menu_guideline"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="48dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/top_guideline"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/common_spacing" />
+
         <TextView
             android:id="@+id/job_company"
-            android:layout_width="match_parent"
+            android:singleLine="true"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:paddingStart="@dimen/common_spacing"
-            android:paddingTop="@dimen/common_spacing"
+            android:textSize="@dimen/job_name"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/menu"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toTopOf="@id/top_guideline"
             tools:text="@tools:sample/cities" />
 
         <TextView
+            android:paddingTop="@dimen/common_spacing"
             android:id="@+id/job_position"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:ellipsize="end"
-            android:paddingStart="@dimen/common_spacing"
             android:textStyle="italic"
-            app:layout_constraintEnd_toStartOf="@id/menu"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@+id/job_company"
-            tools:text="@tools:sample/lorem" />
+            tools:text="@tools:sample/full_names" />
 
         <TextView
             android:id="@+id/job_period"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:paddingStart="@dimen/common_spacing"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            android:paddingBottom="@dimen/common_spacing"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@+id/job_position"
             tools:text="@tools:sample/date/ddmmyy" />
 
         <TextView
             android:id="@+id/job_link"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:paddingStart="@dimen/common_spacing"
-            android:paddingBottom="@dimen/common_spacing"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:autoLink="web|email"
+            android:ellipsize="end"
             android:linksClickable="true"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@+id/job_period"
+            android:paddingBottom="@dimen/common_spacing"
             tools:text="google.com" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

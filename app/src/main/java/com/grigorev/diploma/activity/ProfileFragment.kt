@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -105,13 +104,7 @@ class ProfileFragment : Fragment() {
         binding.userProfileToolbar.jobsList.adapter = jobAdapter
 
         profileViewModel.getAllJobs().observe(viewLifecycleOwner) {
-            val oldCount = jobAdapter.itemCount
-            jobAdapter.submitList(it.toList()) {
-                if (it.size > oldCount) {
-                    binding.userProfileToolbar.jobsList.smoothScrollToPosition((0))
-                }
-            }
-            binding.userProfileToolbar.jobsList.isVisible = it.isNotEmpty()
+            jobAdapter.submitList(it.toList())
         }
 
         val postsAdapter = PostsAdapter(object : OnPostInteractionListener {

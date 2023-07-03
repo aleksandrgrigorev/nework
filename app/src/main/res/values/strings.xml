@@ -69,7 +69,7 @@
     <string name="link">Link</string>
     <string name="add_job">Add a job</string>
     <string name="delete_job">delete a job</string>
-    <string name="job_start_end">From %1$s \nto %2$s</string>
+    <string name="job_start_end">From %1$s to %2$s</string>
     <string name="job_start">Since %1$s</string>
     <string name="user_profile">User profile</string>
     <string name="from">From</string>
