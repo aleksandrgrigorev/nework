@@ -49,8 +49,6 @@ class PostViewHolder(
     private val onPostInteractionListener: OnPostInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private var mp: MediaPlayer? = null
-
     fun bind(post: Post) {
 
         binding.apply {
@@ -108,36 +106,21 @@ class PostViewHolder(
 
             playButton.setOnClickListener {
                 if (mp == null) {
-                    mp = MediaPlayer.create(it.context, post.attachment?.url?.toUri())
-
-                    audioBar.max = mp!!.duration
-                    val handler = Handler()
-                    handler.postDelayed(object : Runnable {
-                        override fun run() {
-                            try {
-                                audioBar.progress = mp!!.currentPosition
-                                handler.postDelayed(this, 1000)
-                            } catch (e: Exception) {
-                                audioBar.progress = 0
-                            }
-                        }
-                    }, 0)
-
-                    mp?.start()
+                    startMp(it, post)
+                } else {
+                    stopMp()
+                    startMp(it, post)
                 }
             }
 
             pauseButton.setOnClickListener {
-                if (mp != null) mp?.pause()
+                if (mp != null) {
+                    if (mp!!.isPlaying) mp?.pause() else mp?.start()
+                }
             }
 
             stopButton.setOnClickListener {
-                if (mp != null) {
-                    mp?.stop()
-                    mp?.reset()
-                    mp?.release()
-                    mp = null
-                }
+                stopMp()
             }
 
             audioBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -186,6 +169,38 @@ class PostViewHolder(
                 }.show()
             }
         }
+    }
+
+    private fun ItemPostBinding.startMp(it: View, post: Post) {
+        mp = MediaPlayer.create(it.context, post.attachment?.url?.toUri())
+
+        audioBar.max = mp!!.duration
+        val handler = Handler()
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                try {
+                    audioBar.progress = mp!!.currentPosition
+                    handler.postDelayed(this, 1000)
+                } catch (e: Exception) {
+                    audioBar.progress = 0
+                }
+            }
+        }, 0)
+
+        mp?.start()
+    }
+
+    private fun stopMp() {
+        if (mp != null) {
+            mp?.stop()
+            mp?.reset()
+            mp?.release()
+            mp = null
+        }
+    }
+
+    companion object {
+        private var mp: MediaPlayer? = null
     }
 }
 
