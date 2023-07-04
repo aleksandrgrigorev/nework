@@ -39,7 +39,7 @@ class ProfileRepositoryImpl @Inject constructor(
 
     @ExperimentalPagingApi
     override fun getWallPosts(authorId: Int): Flow<PagingData<Post>> = Pager(
-        config = PagingConfig(pageSize = DEFAULT_WALL_PAGE_SIZE, enablePlaceholders = false),
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
         remoteMediator = WallRemoteMediator(
             postsApiService,
             wallPostDao,

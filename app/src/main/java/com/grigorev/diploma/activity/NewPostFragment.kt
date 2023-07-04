@@ -16,7 +16,6 @@ import com.grigorev.diploma.R
 import com.grigorev.diploma.databinding.FragmentNewPostBinding
 import com.grigorev.diploma.dto.AttachmentType
 import com.grigorev.diploma.util.AndroidUtils
-import com.grigorev.diploma.viewmodels.AuthViewModel
 import com.grigorev.diploma.viewmodels.PostsViewModel
 import com.grigorev.diploma.viewmodels.emptyPost
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,8 +26,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class NewPostFragment : Fragment() {
 
     private val viewModel: PostsViewModel by activityViewModels()
-    private val authViewModel: AuthViewModel by activityViewModels()
-
     var type: AttachmentType? = null
 
     override fun onCreateView(
@@ -140,16 +137,18 @@ class NewPostFragment : Fragment() {
                                 Toast.makeText(context, R.string.empty_post, Toast.LENGTH_SHORT)
                                     .show()
                             } else {
-                                viewModel.changeContent(editContent.text.toString(), editLink.text.toString())
+                                viewModel.changeContent(
+                                    editContent.text.toString(),
+                                    editLink.text.toString()
+                                )
                                 viewModel.save()
                                 AndroidUtils.hideKeyboard(requireView())
                             }
                             true
                         }
 
-                        R.id.logout -> {
-                            SignOutFragment().show(childFragmentManager, "logoutDialog")
-                            if (!authViewModel.authorized) findNavController().navigateUp()
+                        R.id.cancel -> {
+                            findNavController().navigateUp()
                             true
                         }
 
@@ -160,7 +159,7 @@ class NewPostFragment : Fragment() {
         }
 
         viewModel.postCreated.observe(viewLifecycleOwner) {
-            findNavController().navigate(R.id.action_newPostFragment_to_navigation_posts)
+            findNavController().navigateUp()
         }
 
         viewModel.error.observe(viewLifecycleOwner) {

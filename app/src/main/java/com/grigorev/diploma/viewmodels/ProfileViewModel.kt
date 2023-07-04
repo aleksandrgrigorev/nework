@@ -81,8 +81,8 @@ class ProfileViewModel @Inject constructor(
 
     fun getAllJobs(): LiveData<List<Job>> = repository.getAllJobs()
 
-    fun saveJob(job: Job) {
-        editedJob.value.let {
+    fun saveJob() {
+        editedJob.value?.let {job ->
             viewModelScope.launch {
                 try {
                     _dataState.value = StateModel(loading = true)

@@ -152,6 +152,11 @@ class NewEventFragment : Fragment() {
                             true
                         }
 
+                        R.id.cancel -> {
+                            findNavController().navigateUp()
+                            true
+                        }
+
                         else -> false
                     }
                 }

@@ -7,6 +7,8 @@
         android:title="@string/menu_save"
         app:showAsAction="always" />
     <item
-        android:id="@+id/logout"
-        android:title="@string/logout" />
+        android:id="@+id/cancel"
+        android:icon="@drawable/ic_cancel_24"
+        android:title="@string/logout"
+        app:showAsAction="always"/>
 </menu>

@@ -98,9 +98,18 @@ class ProfileFragment : Fragment() {
         }
 
         if (ownedByMe) {
+            val bundle = Bundle().apply {
+                putString("authorAvatar", authorAvatar)
+                putString("author", author)
+                putInt("authorId", authorId)
+                putBoolean("ownedByMe", ownedByMe)
+            }
             binding.userProfileToolbar.addJob.visibility = View.VISIBLE
             binding.userProfileToolbar.addJob.setOnClickListener {
-                findNavController().navigate(R.id.action_userProfileFragment_to_newJobFragment)
+                findNavController().navigate(
+                    R.id.action_userProfileFragment_to_newJobFragment,
+                    bundle
+                )
             }
         } else {
             binding.userProfileToolbar.addJob.visibility = View.GONE

@@ -15,8 +15,6 @@ import com.grigorev.diploma.entity.WallPostEntity
 import com.grigorev.diploma.entity.toWallPostEntity
 import com.grigorev.diploma.error.ApiException
 
-const val DEFAULT_WALL_PAGE_SIZE = 10
-
 @OptIn(ExperimentalPagingApi::class)
 class WallRemoteMediator(
     private val postsApiService: PostsApiService,
