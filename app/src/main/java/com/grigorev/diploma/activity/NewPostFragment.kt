@@ -115,7 +115,7 @@ class NewPostFragment : Fragment() {
 
             activity?.addMenuProvider(object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.menu_new_post, menu)
+                    menuInflater.inflate(R.menu.menu_new_post_event_job, menu)
                 }
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -133,11 +133,15 @@ class NewPostFragment : Fragment() {
                         }
 
                         R.id.cancel -> {
+                            viewModel.clearEditedPost()
                             findNavController().navigateUp()
                             true
                         }
 
-                        else -> false
+                        else -> {
+                            viewModel.clearEditedPost()
+                            false
+                        }
                     }
                 }
             }, viewLifecycleOwner)

@@ -69,13 +69,6 @@ class ProfileFragment : Fragment() {
             override fun onEditJob(job: Job) {
                 profileViewModel.edit(job)
                 val bundle = Bundle().apply {
-                    putString("name", job.name)
-                    putString("position", job.position)
-                    putString("start", job.start)
-                    putString("finish", job.finish)
-                    putString("link", job.link)
-                    putInt("id", job.id)
-
                     putString("authorAvatar", authorAvatar)
                     putString("author", author)
                     putInt("authorId", authorId)

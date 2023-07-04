@@ -132,7 +132,7 @@ class PostsViewModel @Inject constructor(
                 }
             }
         }
-        edited.value = emptyPost
+        clearEditedPost()
         _media.value = noMedia
     }
 
@@ -159,4 +159,7 @@ class PostsViewModel @Inject constructor(
         _media.value = noMedia
     }
 
+    fun clearEditedPost() {
+        edited.value = emptyPost
+    }
 }

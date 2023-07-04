@@ -20,8 +20,6 @@ import com.grigorev.diploma.repository.EventRepository
 import com.grigorev.diploma.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -85,8 +83,6 @@ class EventsViewModel @Inject constructor(
     val media: LiveData<MediaModel>
         get() = _media
 
-    private val scope = MainScope()
-
     fun save() {
         edited.value?.let { event ->
             viewModelScope.launch {
@@ -111,7 +107,7 @@ class EventsViewModel @Inject constructor(
                 }
             }
         }
-        edited.value = emptyEvent
+        clearEditedEvent()
         _media.value = noMedia
     }
 
@@ -199,8 +195,7 @@ class EventsViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        scope.cancel()
+    fun clearEditedEvent() {
+        edited.value = emptyEvent
     }
 }

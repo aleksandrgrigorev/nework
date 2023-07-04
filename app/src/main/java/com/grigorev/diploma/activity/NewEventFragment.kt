@@ -122,7 +122,7 @@ class NewEventFragment : Fragment() {
 
             activity?.addMenuProvider(object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.menu_new_post, menu)
+                    menuInflater.inflate(R.menu.menu_new_post_event_job, menu)
                 }
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -144,11 +144,15 @@ class NewEventFragment : Fragment() {
                         }
 
                         R.id.cancel -> {
+                            eventViewModel.clearEditedEvent()
                             findNavController().navigateUp()
                             true
                         }
 
-                        else -> false
+                        else -> {
+                            eventViewModel.clearEditedEvent()
+                            false
+                        }
                     }
                 }
             }, viewLifecycleOwner)
