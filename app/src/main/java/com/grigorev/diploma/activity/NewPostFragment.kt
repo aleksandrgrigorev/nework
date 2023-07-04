@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -42,6 +43,13 @@ class NewPostFragment : Fragment() {
             if (viewModel.edited.value != emptyPost) {
                 editContent.setText(viewModel.edited.value?.content)
                 editLink.setText(viewModel.edited.value?.link)
+
+                val url = viewModel.edited.value?.attachment?.url
+                val type = viewModel.edited.value?.attachment?.type
+
+                if (!url.isNullOrBlank()) {
+                    viewModel.changeMedia(url.toUri(), null, type)
+                }
             }
 
             viewModel.media.observe(viewLifecycleOwner) {

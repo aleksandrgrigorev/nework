@@ -62,7 +62,7 @@ class ProfileViewModel @Inject constructor(
             try {
                 _dataState.value = StateModel(loading = true)
                 repository.getLatestWallPosts(userId)
-                _dataState.value = StateModel()
+                _dataState.value = StateModel(loading = false)
             } catch (e: Exception) {
                 _dataState.value = StateModel(error = true)
             }
@@ -73,7 +73,7 @@ class ProfileViewModel @Inject constructor(
         try {
             _dataState.value = StateModel(loading = true)
             repository.loadJobs(authorId)
-            _dataState.value = StateModel()
+            _dataState.value = StateModel(loading = false)
         } catch (e: Exception) {
             _dataState.value = StateModel(error = true)
         }

@@ -161,15 +161,6 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        postsAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                if (positionStart == 0) {
-                    binding.postsList.smoothScrollToPosition(0)
-                }
-            }
-        })
-
         return binding.root
     }
 
