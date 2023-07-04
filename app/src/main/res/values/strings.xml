@@ -42,7 +42,9 @@
     <string name="registration">Registration</string>
     <string name="add_post">Add a post</string>
     <string name="add_event">Add an event</string>
+    <string name="add_edit_event">Add/edit an event</string>
     <string name="new_post">New post</string>
+    <string name="add_edit_post">Add/edit post</string>
     <string name="new_event">New event</string>
     <string name="not_registered">Not registered?</string>
     <string name="already_have_an_account">Already have an account?</string>
@@ -68,6 +70,7 @@
     <string name="attachment">Attachment</string>
     <string name="link">Link</string>
     <string name="add_job">Add a job</string>
+    <string name="add_edit_job">Add/edit a job</string>
     <string name="delete_job">delete a job</string>
     <string name="job_start_end">From %1$s to %2$s</string>
     <string name="job_start">Since %1$s</string>

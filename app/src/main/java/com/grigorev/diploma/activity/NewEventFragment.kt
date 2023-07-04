@@ -120,15 +120,6 @@ class NewEventFragment : Fragment() {
                 eventViewModel.removeMedia()
             }
 
-            eventViewModel.media.observe(viewLifecycleOwner) {
-                if (it?.uri == null) {
-                    mediaContainer.visibility = View.GONE
-                    return@observe
-                }
-                mediaContainer.visibility = View.VISIBLE
-                media.setImageURI(it.uri)
-            }
-
             activity?.addMenuProvider(object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.menu_new_post, menu)

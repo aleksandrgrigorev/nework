@@ -58,7 +58,7 @@ class ProfileFragment : Fragment() {
         binding.userProfileToolbar.username.text = author
 
         binding.appBar.addOnOffsetChangedListener { _, verticalOffset ->
-            binding.swipeToRefresh.isEnabled = verticalOffset == 0
+            binding.swipeRefreshLayout.isEnabled = verticalOffset == 0
         }
 
         profileViewModel.loadJobs(authorId)
@@ -116,7 +116,6 @@ class ProfileFragment : Fragment() {
         }
 
         binding.userProfileToolbar.jobsList.itemAnimator = itemAnimator
-
         binding.userProfileToolbar.jobsList.adapter = jobAdapter
 
         profileViewModel.getAllJobs().observe(viewLifecycleOwner) {
@@ -127,12 +126,7 @@ class ProfileFragment : Fragment() {
 
             override fun onEdit(post: Post) {
                 postsViewModel.edit(post)
-                val bundle = Bundle().apply {
-                    putString("content", post.content)
-                    putString("link", post.link ?: "")
-                }
-                findNavController()
-                    .navigate(R.id.action_userProfileFragment_to_newPostFragment, bundle)
+                findNavController().navigate(R.id.action_userProfileFragment_to_newPostFragment)
             }
 
             override fun onRemove(post: Post) {

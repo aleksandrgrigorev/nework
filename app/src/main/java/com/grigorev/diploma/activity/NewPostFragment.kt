@@ -35,16 +35,18 @@ class NewPostFragment : Fragment() {
     ): View {
         val binding = FragmentNewPostBinding.inflate(inflater, container, false)
 
-        val content = arguments?.getString("content")
-        val link = arguments?.getString("link")
-
         binding.apply {
 
             editContent.requestFocus()
 
             if (viewModel.edited.value != emptyPost) {
-                editContent.setText(content)
-                editLink.setText(link)
+                editContent.setText(viewModel.edited.value?.content)
+                editLink.setText(viewModel.edited.value?.link)
+            }
+
+            viewModel.media.observe(viewLifecycleOwner) {
+                media.setImageURI(it.uri)
+                mediaContainer.isVisible = it.uri != null
             }
 
             val photoContract =
@@ -72,11 +74,6 @@ class NewPostFragment : Fragment() {
                         viewModel.changeMedia(it, stream, type)
                     }
                 }
-
-            viewModel.media.observe(viewLifecycleOwner) {
-                media.setImageURI(it.uri)
-                mediaContainer.isVisible = it.uri != null
-            }
 
             takePhoto.setOnClickListener {
                 ImagePicker.with(this@NewPostFragment)
@@ -116,15 +113,6 @@ class NewPostFragment : Fragment() {
                 viewModel.removeMedia()
             }
 
-            viewModel.media.observe(viewLifecycleOwner) {
-                if (it?.uri == null) {
-                    mediaContainer.visibility = View.GONE
-                    return@observe
-                }
-                mediaContainer.visibility = View.VISIBLE
-                media.setImageURI(it.uri)
-            }
-
             activity?.addMenuProvider(object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.menu_new_post, menu)
@@ -137,10 +125,7 @@ class NewPostFragment : Fragment() {
                                 Toast.makeText(context, R.string.empty_post, Toast.LENGTH_SHORT)
                                     .show()
                             } else {
-                                viewModel.changeContent(
-                                    editContent.text.toString(),
-                                    editLink.text.toString()
-                                )
+                                viewModel.changeContent(editContent.text.toString(), editLink.text.toString())
                                 viewModel.save()
                                 AndroidUtils.hideKeyboard(requireView())
                             }

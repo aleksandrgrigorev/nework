@@ -50,12 +50,7 @@ class PostsFragment : Fragment() {
 
             override fun onEdit(post: Post) {
                 postsViewModel.edit(post)
-                val bundle = Bundle().apply {
-                    putString("content", post.content)
-                    putString("link", post.link ?: "")
-                }
-                findNavController()
-                    .navigate(R.id.action_posts_to_newPostFragment, bundle)
+                findNavController().navigate(R.id.action_posts_to_newPostFragment)
             }
 
             override fun onRemove(post: Post) {
