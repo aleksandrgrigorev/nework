@@ -39,25 +39,22 @@ class NewEventFragment : Fragment() {
     ): View {
         val binding = FragmentNewEventBinding.inflate(inflater, container, false)
 
-        val datetime = arguments?.getString("datetime")
-        val date = datetime?.substring(0, 10)
-        val time = datetime?.substring(11, 16)
-
-        val content = arguments?.getString("content")
-        val eventType = arguments?.getString("eventType")
-        val link = arguments?.getString("link")
-
         binding.apply {
 
             editContent.requestFocus()
 
             if (eventViewModel.edited.value != emptyEvent) {
-                editContent.setText(content)
+                val datetime = eventViewModel.edited.value?.datetime
+                val date = datetime?.substring(0, 10)
+                val time = datetime?.substring(11, 16)
+
                 editDate.setText(date)
                 editTime.setText(time)
-                editLink.setText(link)
 
-                when (eventType) {
+                editContent.setText(eventViewModel.edited.value?.content)
+                editLink.setText(eventViewModel.edited.value?.link)
+
+                when (eventViewModel.edited.value?.type?.name) {
                     "ONLINE" -> eventTypeCheckBox.isChecked = true
                     "OFFLINE" -> eventTypeCheckBox.isChecked = false
                 }
@@ -68,7 +65,6 @@ class NewEventFragment : Fragment() {
                 if (!url.isNullOrBlank()) {
                     eventViewModel.changeMedia(url.toUri(), null, type)
                 }
-
             }
 
             editDate.setOnClickListener {

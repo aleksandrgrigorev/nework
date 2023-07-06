@@ -50,14 +50,7 @@ class EventsFragment : Fragment() {
 
             override fun onEditEvent(event: Event) {
                 eventsViewModel.edit(event)
-                val bundle = Bundle().apply {
-                    putString("content", event.content)
-                    putString("datetime", event.datetime)
-                    putString("eventType", event.type.toString())
-                    putString("link", event.link)
-                }
-                findNavController()
-                    .navigate(R.id.action_events_to_newEventFragment, bundle)
+                findNavController().navigate(R.id.action_events_to_newEventFragment)
             }
 
             override fun onRemoveEvent(event: Event) {
