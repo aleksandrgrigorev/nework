@@ -26,7 +26,8 @@
         android:layout_height="@dimen/register_avatar_size"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/description_media"
-        tools:src="@tools:sample/avatars"
+        android:clickable="true"
+        android:src="@drawable/ic_person_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_sign_up" />

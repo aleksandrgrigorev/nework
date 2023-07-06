@@ -48,8 +48,8 @@
     <string name="new_event">New event</string>
     <string name="not_registered">Not registered?</string>
     <string name="already_have_an_account">Already have an account?</string>
-    <string name="reg_successful">Registration successful. Welcome!</string>
-    <string name="auth_successful">Authorization successful. Welcome!</string>
+    <string name="reg_successful">Registration successful.\nWelcome!</string>
+    <string name="auth_successful">Authorization successful.\nWelcome!</string>
     <string name="logout_successful">You have logged out</string>
     <string name="pick_avatar">Click on an avatar to pick a picture</string>
     <string name="empty_post">Post can\'t be empty</string>
@@ -79,8 +79,8 @@
     <string name="until">Until</string>
     <string name="job_title">Job title</string>
     <string name="job_position">Job position</string>
-    <string name="empty_participants">No one takes part in this event at the moment</string>
-    <string name="empty_post_likers">No one liked this post yet. Be the first one!</string>
-    <string name="empty_event_likers">No one liked this event yet. Be the first one!</string>
+    <string name="empty_participants">No one is going to take part in this event at the moment</string>
+    <string name="empty_post_likers">No one liked this post yet.\nBe the first one!</string>
+    <string name="empty_event_likers">No one liked this event yet.\nBe the first one!</string>
     <string name="empty_event_speakers">This event has no speakers now</string>
 </resources>
