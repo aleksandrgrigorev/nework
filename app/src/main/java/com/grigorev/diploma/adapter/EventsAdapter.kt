@@ -54,11 +54,13 @@ class EventViewHolder(
     fun bind(event: Event) {
 
         binding.apply {
-            author.text = itemView.context.getString(
-                R.string.author_job,
-                event.author,
-                event.authorJob ?: itemView.context.resources.getString(R.string.null_job)
-            )
+            if (event.authorJob != null) {
+                author.text = itemView.context.getString(
+                    R.string.author_job,
+                    event.author,
+                    event.authorJob
+                )
+            } else author.text = event.author
             published.text = formatDateTime(event.published)
             content.text = event.content
             dateTime.text = itemView.context.getString(

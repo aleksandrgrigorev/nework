@@ -10,7 +10,6 @@
     <string name="like">Нравится</string>
     <string name="share">Поделиться</string>
     <string name="author_job">%1$s из %2$s</string>
-    <string name="null_job">неизвестной компании</string>
     <string name="published_time">дата публикации</string>
     <string name="menu_remove">Удалить</string>
     <string name="menu_edit">Редактировать</string>
@@ -43,9 +42,9 @@
     <string name="registration">Регистрация</string>
     <string name="add_post">Добавить запись</string>
     <string name="add_event">Добавить встречу</string>
-    <string name="add_edit_event">Добавление/редактирование встречи</string>
+    <string name="add_edit_event">Встреча</string>
     <string name="new_post">Новая запись</string>
-    <string name="add_edit_post">Добавление/редактирование записи</string>
+    <string name="add_edit_post">Запись</string>
     <string name="new_event">Новая встреча</string>
     <string name="not_registered">Не зарегистрированы?</string>
     <string name="already_have_an_account">Уже есть аккаунт?</string>
@@ -71,7 +70,7 @@
     <string name="attachment">Вложение</string>
     <string name="link">Ссылка</string>
     <string name="add_job">Добавить работу</string>
-    <string name="add_edit_job">Добавление/редактирование работы</string>
+    <string name="add_edit_job">Место работы</string>
     <string name="delete_job">Удалить работу</string>
     <string name="job_start_end">С %1$s по %2$s</string>
     <string name="job_start">С %1$s</string>

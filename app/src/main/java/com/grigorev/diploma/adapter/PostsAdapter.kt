@@ -82,11 +82,14 @@ class PostViewHolder(
                 .circleCrop()
                 .into(authorAvatar)
 
-            author.text = itemView.context.getString(
-                R.string.author_job,
-                post.author,
-                post.authorJob ?: itemView.context.resources.getString(R.string.null_job)
-            )
+            if (post.authorJob != null) {
+                author.text = itemView.context.getString(
+                    R.string.author_job,
+                    post.author,
+                    post.authorJob
+                )
+            } else author.text = post.author
+
             published.text = formatDateTime(post.published)
             content.text = post.content
 

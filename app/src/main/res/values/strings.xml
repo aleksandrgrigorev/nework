@@ -9,7 +9,6 @@
     <string name="like">Like</string>
     <string name="share">Share</string>
     <string name="author_job">%1$s from %2$s</string>
-    <string name="null_job">undefined workplace</string>
     <string name="published_time">published time</string>
     <string name="menu_remove">Remove</string>
     <string name="menu_edit">Edit</string>
