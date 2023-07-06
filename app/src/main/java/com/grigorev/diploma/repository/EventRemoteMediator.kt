@@ -54,10 +54,9 @@ class EventRemoteMediator(
             appDb.withTransaction {
                 when (loadType) {
                     LoadType.REFRESH -> {
+                        eventDao.removeAll()
                         insertMaxKey(body)
-                        if (eventRemoteKeyDao.isEmpty()) {
-                            insertMinKey(body)
-                        }
+                        insertMinKey(body)
                         eventDao.removeAll()
                     }
                     LoadType.APPEND -> insertMinKey(body)
