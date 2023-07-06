@@ -82,4 +82,5 @@
     <string name="empty_participants">No one takes part in this event at the moment</string>
     <string name="empty_post_likers">No one liked this post yet. Be the first one!</string>
     <string name="empty_event_likers">No one liked this event yet. Be the first one!</string>
+    <string name="empty_event_speakers">This event has no speakers now</string>
 </resources>

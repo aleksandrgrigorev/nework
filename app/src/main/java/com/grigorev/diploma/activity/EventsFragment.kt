@@ -118,6 +118,18 @@ class EventsFragment : Fragment() {
                     }
                 } else unauthorizedAccessAttempt()
             }
+
+            override fun onOpenSpeakers(event: Event) {
+                if (authViewModel.authorized) {
+                    userViewModel.getUsersIds(event.speakerIds)
+                    if (event.speakerIds.isEmpty()) {
+                        Toast.makeText(context, R.string.empty_event_speakers, Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        UserListFragment().show(childFragmentManager, UserListFragment.TAG)
+                    }
+                } else unauthorizedAccessAttempt()
+            }
         })
 
         val itemAnimator: DefaultItemAnimator = object : DefaultItemAnimator() {

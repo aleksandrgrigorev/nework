@@ -27,6 +27,8 @@ interface OnEventInteractionListener {
     fun onOpenParticipants(event: Event)
 
     fun onOpenLikers(event: Event)
+
+    fun onOpenSpeakers(event: Event)
 }
 
 class EventAdapter(
@@ -96,6 +98,10 @@ class EventViewHolder(
                 link.visibility = VISIBLE
                 link.text = itemView.context.getString(R.string.get_link, event.link)
             } else link.visibility = GONE
+
+            speakers.setOnClickListener {
+                onEventInteractionListener.onOpenSpeakers(event)
+            }
 
             like.isChecked = event.likedByMe
             like.text = "${event.likeOwnerIds.size}"
