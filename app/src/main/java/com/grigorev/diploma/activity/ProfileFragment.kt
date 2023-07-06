@@ -23,8 +23,10 @@ import com.grigorev.diploma.adapter.PostsAdapter
 import com.grigorev.diploma.databinding.FragmentProfileBinding
 import com.grigorev.diploma.dto.Job
 import com.grigorev.diploma.dto.Post
+import com.grigorev.diploma.viewmodels.AuthViewModel
 import com.grigorev.diploma.viewmodels.PostsViewModel
 import com.grigorev.diploma.viewmodels.ProfileViewModel
+import com.grigorev.diploma.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -36,6 +38,8 @@ class ProfileFragment : Fragment() {
 
     private val postsViewModel: PostsViewModel by activityViewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     @OptIn(ExperimentalPagingApi::class)
     override fun onCreateView(
@@ -43,10 +47,11 @@ class ProfileFragment : Fragment() {
     ): View {
         val binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        val authorAvatar = arguments?.getString("authorAvatar")
-        val author = arguments?.getString("author")!!
-        val authorId = arguments?.getInt("authorId")!!
-        val ownedByMe = arguments?.getBoolean("ownedByMe")!!
+        val authorAvatar = userViewModel.user.value?.avatar
+        val author = userViewModel.user.value?.name
+        val authorId = userViewModel.user.value?.id ?: 0
+
+        val ownedByMe = authorId == authViewModel.state.value?.id
 
         Glide.with(binding.userProfileToolbar.userAvatar)
             .load(authorAvatar)
@@ -68,14 +73,8 @@ class ProfileFragment : Fragment() {
 
             override fun onEditJob(job: Job) {
                 profileViewModel.edit(job)
-                val bundle = Bundle().apply {
-                    putString("authorAvatar", authorAvatar)
-                    putString("author", author)
-                    putInt("authorId", authorId)
-                    putBoolean("ownedByMe", ownedByMe)
-                }
                 findNavController()
-                    .navigate(R.id.action_userProfileFragment_to_newJobFragment, bundle)
+                    .navigate(R.id.action_userProfileFragment_to_newJobFragment)
             }
 
             override fun onDeleteJob(job: Job) {
@@ -91,18 +90,9 @@ class ProfileFragment : Fragment() {
         }
 
         if (ownedByMe) {
-            val bundle = Bundle().apply {
-                putString("authorAvatar", authorAvatar)
-                putString("author", author)
-                putInt("authorId", authorId)
-                putBoolean("ownedByMe", ownedByMe)
-            }
             binding.userProfileToolbar.addJob.visibility = View.VISIBLE
             binding.userProfileToolbar.addJob.setOnClickListener {
-                findNavController().navigate(
-                    R.id.action_userProfileFragment_to_newJobFragment,
-                    bundle
-                )
+                findNavController().navigate(R.id.action_userProfileFragment_to_newJobFragment)
             }
         } else {
             binding.userProfileToolbar.addJob.visibility = View.GONE
@@ -127,9 +117,12 @@ class ProfileFragment : Fragment() {
             }
 
             override fun onLike(post: Post) {
-                when (post.likedByMe) {
-                    true -> postsViewModel.unlikeById(post.id)
-                    false -> postsViewModel.likeById(post.id)
+                lifecycleScope.launch {
+                    when (post.likedByMe) {
+                        true -> postsViewModel.unlikeById(post.id)
+                        false -> postsViewModel.likeById(post.id)
+                    }.join()
+                    profileViewModel.getLatestWallPosts(authorId)
                 }
             }
 
@@ -150,6 +143,16 @@ class ProfileFragment : Fragment() {
                     "You are already on this profile",
                     Toast.LENGTH_SHORT
                 ).show()
+            }
+
+            override fun onOpenLikers(post: Post) {
+                userViewModel.getUsersIds(post.likeOwnerIds)
+                if (post.likeOwnerIds.isEmpty()) {
+                    Toast.makeText(context, R.string.empty_post_likers, Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    UserListFragment().show(childFragmentManager, UserListFragment.TAG)
+                }
             }
         })
 

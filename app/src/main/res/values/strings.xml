@@ -4,7 +4,7 @@
     <string name="events">Events</string>
     <string name="users">Users</string>
     <string name="profile">Profile</string>
-    <string name="author_avatar">Author avatar</string>
+    <string name="user_avatar">User avatar</string>
     <string name="post_menu">Post menu</string>
     <string name="like">Like</string>
     <string name="share">Share</string>
@@ -79,4 +79,7 @@
     <string name="until">Until</string>
     <string name="job_title">Job title</string>
     <string name="job_position">Job position</string>
+    <string name="empty_participants">No one takes part in this event at the moment</string>
+    <string name="empty_post_likers">No one liked this post yet. Be the first one!</string>
+    <string name="empty_event_likers">No one liked this event yet. Be the first one!</string>
 </resources>

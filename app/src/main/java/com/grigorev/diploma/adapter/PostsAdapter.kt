@@ -28,6 +28,8 @@ interface OnPostInteractionListener {
     fun onWatchVideo(post: Post)
 
     fun onOpenUserProfile(post: Post)
+
+    fun onOpenLikers(post: Post)
 }
 
 class PostsAdapter(
@@ -145,6 +147,11 @@ class PostViewHolder(
 
             like.setOnClickListener {
                 onPostInteractionListener.onLike(post)
+            }
+
+            like.setOnLongClickListener {
+                onPostInteractionListener.onOpenLikers(post)
+                true
             }
 
             menu.isVisible = post.ownedByMe

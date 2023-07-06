@@ -7,7 +7,6 @@ import com.grigorev.diploma.dto.MediaUpload
 import kotlinx.coroutines.flow.Flow
 
 interface EventRepository {
-
     val data: Flow<PagingData<Event>>
 
     suspend fun saveEvent(event: Event)

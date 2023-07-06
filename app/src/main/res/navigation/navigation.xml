@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_events_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_events_to_userListFragment"
+            app:destination="@id/userListFragment" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
@@ -103,5 +106,9 @@
             app:popUpTo="@id/userProfileFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/userListFragment"
+        android:name="com.grigorev.diploma.activity.UserListFragment"
+        android:label="UserListFragment" />
 
 </navigation>

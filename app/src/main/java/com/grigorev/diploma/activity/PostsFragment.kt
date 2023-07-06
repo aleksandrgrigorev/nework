@@ -27,6 +27,7 @@ import com.grigorev.diploma.databinding.FragmentPostsBinding
 import com.grigorev.diploma.dto.Post
 import com.grigorev.diploma.viewmodels.AuthViewModel
 import com.grigorev.diploma.viewmodels.PostsViewModel
+import com.grigorev.diploma.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -38,6 +39,7 @@ class PostsFragment : Fragment() {
 
     private val postsViewModel: PostsViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,29 +73,37 @@ class PostsFragment : Fragment() {
             }
 
             override fun onWatchVideo(post: Post) {
-                try {
-                    val uri = Uri.parse(post.attachment?.url)
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.setDataAndType(uri, "video/*")
-                    startActivity(intent)
-                } catch (e: Exception) {
-                    Toast.makeText(context, R.string.error_loading, Toast.LENGTH_SHORT).show()
-                }
+                if (authViewModel.authorized) {
+                    try {
+                        val uri = Uri.parse(post.attachment?.url)
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.setDataAndType(uri, "video/*")
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        Toast.makeText(context, R.string.error_loading, Toast.LENGTH_SHORT).show()
+                    }
+                } else unauthorizedAccessAttempt()
+            }
+
+            override fun onOpenLikers(post: Post) {
+                if (authViewModel.authorized) {
+                    userViewModel.getUsersIds(post.likeOwnerIds)
+                    if (post.likeOwnerIds.isEmpty()) {
+                        Toast.makeText(context, R.string.empty_post_likers, Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        UserListFragment().show(childFragmentManager, UserListFragment.TAG)
+                    }
+                } else unauthorizedAccessAttempt()
             }
 
             override fun onOpenUserProfile(post: Post) {
                 if (authViewModel.authorized) {
-                        val bundle = Bundle().apply {
-                        putString("authorAvatar", post.authorAvatar)
-                        putString("author", post.author)
-                        putInt("authorId", post.authorId)
-                        putBoolean("ownedByMe", post.ownedByMe)
+                    lifecycleScope.launch {
+                        userViewModel.getUserById(post.authorId).join()
+                        findNavController().navigate(R.id.action_posts_to_userProfileFragment)
                     }
-                    findNavController()
-                        .navigate(R.id.action_posts_to_userProfileFragment, bundle)
-                } else {
-                    unauthorizedAccessAttempt()
-                }
+                } else unauthorizedAccessAttempt()
             }
         })
 

@@ -85,13 +85,6 @@ class NewJobFragment : Fragment() {
                             val dateEnd = dateEndUnprocessed.ifBlank { "" }
                             val link = editLink.text.toString().trim()
 
-                            val bundle = Bundle().apply {
-                                putString("authorAvatar", arguments?.getString("authorAvatar"))
-                                putString("author", arguments?.getString("author")!!)
-                                putInt("authorId", arguments?.getInt("authorId")!!)
-                                putBoolean("ownedByMe", arguments?.getBoolean("ownedByMe")!!)
-                            }
-
                             if (company.isEmpty() || position.isEmpty() || dateStart.isEmpty()) {
                                 Toast.makeText(context, R.string.error_blank_fields, Toast.LENGTH_SHORT)
                                     .show()
@@ -107,9 +100,7 @@ class NewJobFragment : Fragment() {
                                 viewModel.saveJob()
                                 AndroidUtils.hideKeyboard(requireView())
                             }
-                            findNavController().navigate(
-                                R.id.action_newJobFragment_to_userProfileFragment, bundle
-                            )
+                            findNavController().navigate(R.id.action_newJobFragment_to_userProfileFragment)
                             true
                         }
 

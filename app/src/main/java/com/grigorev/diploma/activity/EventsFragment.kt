@@ -25,6 +25,7 @@ import com.grigorev.diploma.databinding.FragmentEventsBinding
 import com.grigorev.diploma.dto.Event
 import com.grigorev.diploma.viewmodels.AuthViewModel
 import com.grigorev.diploma.viewmodels.EventsViewModel
+import com.grigorev.diploma.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -36,6 +37,7 @@ class EventsFragment : Fragment() {
 
     private val eventsViewModel: EventsViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,17 +88,35 @@ class EventsFragment : Fragment() {
 
             override fun onOpenUserProfile(event: Event) {
                 if (authViewModel.authorized) {
-                    val bundle = Bundle().apply {
-                        putString("authorAvatar", event.authorAvatar)
-                        putString("author", event.author)
-                        putInt("authorId", event.authorId)
-                        putBoolean("ownedByMe", event.ownedByMe)
+                    lifecycleScope.launch {
+                        userViewModel.getUserById(event.authorId).join()
+                        findNavController().navigate(R.id.action_events_to_userProfileFragment)
                     }
-                    findNavController()
-                        .navigate(R.id.action_events_to_userProfileFragment, bundle)
-                } else {
-                    unauthorizedAccessAttempt()
-                }
+                } else unauthorizedAccessAttempt()
+            }
+
+            override fun onOpenParticipants(event: Event) {
+                if (authViewModel.authorized) {
+                    userViewModel.getUsersIds(event.participantsIds)
+                    if (event.participantsIds.isEmpty()) {
+                        Toast.makeText(context, R.string.empty_participants, Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        UserListFragment().show(childFragmentManager, UserListFragment.TAG)
+                    }
+                } else unauthorizedAccessAttempt()
+            }
+
+            override fun onOpenLikers(event: Event) {
+                if (authViewModel.authorized) {
+                    userViewModel.getUsersIds(event.likeOwnerIds)
+                    if (event.likeOwnerIds.isEmpty()) {
+                        Toast.makeText(context, R.string.empty_event_likers, Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        UserListFragment().show(childFragmentManager, UserListFragment.TAG)
+                    }
+                } else unauthorizedAccessAttempt()
             }
         })
 

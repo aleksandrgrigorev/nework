@@ -6,6 +6,8 @@ import com.grigorev.diploma.repository.PostRepository
 import com.grigorev.diploma.repository.PostRepositoryImpl
 import com.grigorev.diploma.repository.ProfileRepository
 import com.grigorev.diploma.repository.ProfileRepositoryImpl
+import com.grigorev.diploma.repository.UserRepository
+import com.grigorev.diploma.repository.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -27,4 +29,8 @@ interface RepositoryModule {
     @Singleton
     @Binds
     fun bindsProfileRepository(impl: ProfileRepositoryImpl): ProfileRepository
+
+    @Singleton
+    @Binds
+    fun bindsUserRepository(impl: UserRepositoryImpl): UserRepository
 }

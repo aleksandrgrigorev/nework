@@ -10,7 +10,7 @@
         android:layout_width="@dimen/profile_avatar_size"
         android:layout_height="@dimen/profile_avatar_size"
         android:layout_marginTop="@dimen/layout_margin"
-        android:contentDescription="@string/author_avatar"
+        android:contentDescription="@string/user_avatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars"/>
@@ -26,6 +26,8 @@
         android:layout_marginStart="@dimen/common_spacing"
         app:layout_constraintStart_toEndOf="@id/user_avatar"
         app:layout_constraintTop_toTopOf="@id/user_avatar"
+        app:layout_constraintBottom_toTopOf="@id/add_job"
+        app:layout_constraintBottom_toBottomOf="@id/user_avatar"
         tools:text="@tools:sample/full_names" />
 
     <com.google.android.material.button.MaterialButton
@@ -37,6 +39,7 @@
         android:text="@string/add_job"
         android:textColor="@color/colorWhite"
         app:layout_constraintStart_toEndOf="@id/user_avatar"
+        app:layout_constraintBottom_toBottomOf="@id/user_avatar"
         app:layout_constraintTop_toBottomOf="@id/username" />
 
     <androidx.recyclerview.widget.RecyclerView

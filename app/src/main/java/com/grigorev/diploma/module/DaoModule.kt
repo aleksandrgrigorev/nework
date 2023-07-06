@@ -6,6 +6,7 @@ import com.grigorev.diploma.dao.EventRemoteKeyDao
 import com.grigorev.diploma.dao.JobDao
 import com.grigorev.diploma.dao.PostDao
 import com.grigorev.diploma.dao.PostRemoteKeyDao
+import com.grigorev.diploma.dao.UserDao
 import com.grigorev.diploma.dao.WallRemoteKeyDao
 import com.grigorev.diploma.db.AppDb
 import dagger.Module
@@ -36,4 +37,7 @@ object DaoModule {
 
     @Provides
     fun provideWallRemoteKeyDao(db: AppDb): WallRemoteKeyDao = db.wallRemoteKeyDao()
+
+    @Provides
+    fun provideUserDao(db: AppDb): UserDao = db.userDao()
 }

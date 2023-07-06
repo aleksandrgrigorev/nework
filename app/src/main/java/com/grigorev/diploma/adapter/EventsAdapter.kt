@@ -23,6 +23,10 @@ interface OnEventInteractionListener {
     fun onParticipate(event: Event)
 
     fun onOpenUserProfile(event: Event)
+
+    fun onOpenParticipants(event: Event)
+
+    fun onOpenLikers(event: Event)
 }
 
 class EventAdapter(
@@ -100,9 +104,18 @@ class EventViewHolder(
                 onEventInteractionListener.onLikeEvent(event)
             }
 
+            like.setOnLongClickListener {
+                onEventInteractionListener.onOpenLikers(event)
+                true
+            }
+
             participate.isChecked = event.participatedByMe
             participate.setOnClickListener {
                 onEventInteractionListener.onParticipate(event)
+            }
+
+            participants.setOnClickListener {
+                onEventInteractionListener.onOpenParticipants(event)
             }
 
             menu.isVisible = event.ownedByMe
