@@ -15,14 +15,7 @@ data class JobEntity(
     val link: String? = null,
 ) {
 
-    fun toDto(): Job = Job(
-        id = id,
-        name = name,
-        position = position,
-        start = start,
-        finish = finish,
-        link = link
-    )
+    fun toDto(): Job = Job(id, name, position, start, finish, link)
 
     companion object {
         fun fromDto(jobDto: Job): JobEntity {

@@ -17,7 +17,6 @@ data class Event(
     val published: String = "",
     val speakerIds: Set<Int> = emptySet(),
     val type: EventType = EventType.ONLINE,
-    val users: Map<Int, User> = emptyMap(),
     val attachment: Attachment? = null
 )
 
