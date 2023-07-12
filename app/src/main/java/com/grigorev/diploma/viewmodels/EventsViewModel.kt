@@ -89,8 +89,7 @@ class EventsViewModel @Inject constructor(
                 _dataState.postValue(StateModel(loading = true))
                 try {
                     when (_media.value) {
-                        noMedia ->
-                            eventRepository.saveEvent(event)
+                        noMedia -> eventRepository.saveEvent(event)
 
                         else ->
                             _media.value?.inputStream?.let {
@@ -102,8 +101,7 @@ class EventsViewModel @Inject constructor(
                     _dataState.value = StateModel()
                     _eventCreated.value = Unit
                 } catch (e: Exception) {
-                    Log.e("error", e.toString())
-                    throw UnknownError()
+                    _dataState.value = StateModel(error = true)
                 }
             }
         }
